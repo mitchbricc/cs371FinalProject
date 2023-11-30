@@ -1,0 +1,58 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3D Shapes</title>
+
+	<!--   Begin GLSL 3.0 Shader code -->
+	<script id="vertex-shader" type="x-shader/x-vertex">
+		#version 300 es
+		in vec4 a_coords;
+ 
+        uniform mat4 u_modelViewMatrix;
+        uniform mat4 u_projectionMatrix;
+
+        void main() {
+            gl_Position = u_projectionMatrix * u_modelViewMatrix * a_coords;
+        }        
+
+	</script>
+
+	<script id="fragment-shader" type="x-shader/x-fragment">
+		#version 300 es
+		precision mediump float;
+        uniform vec4 u_color;
+		out vec4 f_color;
+
+		void main() {
+			f_color = u_color;
+		}
+	</script>
+	<!--   End GLSL 3.0 Shader code -->
+
+	<!--   JS include files -->
+	<script type="text/javascript" src="CS371utils.js"></script>
+	<script type="text/javascript" src="shapes3D.js"></script>
+</head>
+
+<body onload="init();">
+	<h2>3D Shapes</h2>
+	<canvas id="gl-canvas" style="float:left; margin-right: 5px;" width="600" height="600">>
+		Oops ... your browser doesn't support the HTML5 canvas element
+	</canvas>
+    <div>
+            <button id="left" onclick="left();">left</button>
+            <button id="right" onclick="right();">right</button>
+            <button id="up" onclick="up();">up</button>
+            <button id="down" onclick="down();">down</button> <br>
+
+            <button id="larger" onclick="larger();">larger</button>
+            <button id="smaller" onclick="smaller();">smaller</button> <br>
+            
+            <button id="rx" onclick="rX();">Rotate X</button>
+            <button id="ry" onclick="rY();">Rotate Y</button>
+            <button id="rz" onclick="rZ();">Rotate Z</button>            
+            <button id="reset" onclick="reset();">reset</button>                  
+	</div>
+</body>
+</html>
