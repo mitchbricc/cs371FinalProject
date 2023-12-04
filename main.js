@@ -87,7 +87,7 @@ function init() {
 
     //add event listeners
     canvas.addEventListener( "mousemove", MouseMove, false);
-    canvas.addEventListener( "onmousedown", onMousedown, false);
+    canvas.addEventListener( "click", ClickOnCanvas, false);
 
 	let  options = {  // no need for alpha channel in this program; depth buffer is needed
 		alpha: false,
@@ -244,11 +244,12 @@ function arcCCW(){
     draw();
 }
 
-function reset(){
-    eyeX = 0;
-    eyeY = 0;
-    eyeZ = 5;
-    let eye = vec3(eyeX,eyeY,eyeZ);
+function reset(x,y){
+    // eyeX = 0;
+    // eyeY = 0;
+    // eyeZ = 5;
+    // let eye = vec3(eyeX,eyeY,eyeZ);
+    eye = vec3(x,y,eye[2]);
     modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
@@ -294,33 +295,39 @@ function multM3V3( u, v ) {
 
 //set listener for mouse movement to effect camera
 function MouseMove(e){
-    const canvas = gl.canvas;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
- 
-    mouseX = x / rect.width  *  2 - 1;
-    mouseY = y / rect.height * -2 + 1;
-
-    if(mouseOldX == null || mouseOldY == null){
-        mouseOldX = mouseX;
-        mouseOldY = mouseY;
-    }
-    document.getElementById("demo2").innerHTML = mouseX + "," + mouseY;
+    if(!(mouseOldX == null || mouseOldY == null)){
+        const canvas = gl.canvas;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
     
+        mouseX = x / rect.width  *  2 - 1;
+        mouseY = y / rect.height * -2 + 1;
+
+        document.getElementById("demo2").innerHTML = mouseX + "," + mouseY;
+    }
 }
 //set listener for mouse click
-function onMousedown(e){
+function ClickOnCanvas(e){
     
     if(cursorHidden){
         document.getElementById('gl-canvas').style.cursor = "auto";
         cursorHidden = !cursorHidden;
-        document.getElementById("demo2").innerHTML = "unhide";
+        mouseOldX = null;
+        mouseOldY = null;
+        //document.getElementById("demo2").innerHTML = "unhide";
     }
     else{
         document.getElementById('gl-canvas').style.cursor = "none";
         cursorHidden = !cursorHidden;
-        document.getElementById("demo2").innerHTML = "hide";
+        const canvas = gl.canvas;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+    
+        mouseOldX = x / rect.width  *  2 - 1;
+        mouseOldY = y / rect.height * -2 + 1;
+        //document.getElementById("demo2").innerHTML = "hide";
     }
 
 }
