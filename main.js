@@ -2,6 +2,7 @@
 
 //declarations
 let gl;  // The WebGL graphics context.
+let canvas;
 
 //Constants for the step value for rotation
 const R_STEP = 10.0;
@@ -15,6 +16,12 @@ let up = vec3(0.0, 1.0, 0.0);
 
 let eyeX=0, eyeY=0, eyeZ=5;
 let eye;
+
+//globals for mouse effects
+let mouseOldX, mouseOldY,mouseX,mouseY; 
+let cursorHidden = false;
+
+
 
 //Global variables for colors and coordinates
  let coords = [
@@ -73,9 +80,15 @@ let colors = [
 ];
 //Initialize the program.  This function is called after the page has been loaded.
 function init() {
+    
 
 	//Get graphics context
-    let canvas = document.getElementById( "gl-canvas" );
+    canvas = document.getElementById( "gl-canvas" );
+
+    //add event listeners
+    canvas.addEventListener( "mousemove", MouseMove, false);
+    canvas.addEventListener( "onmousedown", onMousedown, false);
+
 	let  options = {  // no need for alpha channel in this program; depth buffer is needed
 		alpha: false,
 		depth: true
@@ -277,4 +290,37 @@ function multM3V3( u, v ) {
     result[1] = u[1][0]*v[0] + u[1][1]*v[1] + u[1][2]*v[2];
     result[2] = u[2][0]*v[0] + u[2][1]*v[1] + u[2][2]*v[2];
     return result;
+}
+
+//set listener for mouse movement to effect camera
+function MouseMove(e){
+    const canvas = gl.canvas;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+ 
+    mouseX = x / rect.width  *  2 - 1;
+    mouseY = y / rect.height * -2 + 1;
+
+    if(mouseOldX == null || mouseOldY == null){
+        mouseOldX = mouseX;
+        mouseOldY = mouseY;
+    }
+    document.getElementById("demo2").innerHTML = mouseX + "," + mouseY;
+    
+}
+//set listener for mouse click
+function onMousedown(e){
+    
+    if(cursorHidden){
+        document.getElementById('gl-canvas').style.cursor = "auto";
+        cursorHidden = !cursorHidden;
+        document.getElementById("demo2").innerHTML = "unhide";
+    }
+    else{
+        document.getElementById('gl-canvas').style.cursor = "none";
+        cursorHidden = !cursorHidden;
+        document.getElementById("demo2").innerHTML = "hide";
+    }
+
 }

@@ -38,6 +38,7 @@
 	<!--   JS include files -->
 	<script type="text/javascript" src="CS371utils.js"></script>
 	<script type="text/javascript" src="main.js"></script>
+    
 
 </head>
 
@@ -46,9 +47,12 @@
     <p id="demo"></p>
     <p id="demo2"></p>
     <!--The style for the canvas should make the other HTML elements appear to its right  -->
-	<canvas id="gl-canvas" style="float:left; margin-right: 5px;" width="600" height="600">>
+	<canvas id="gl-canvas" onmousedown="onMouseDown()" style="float:left; margin-right: 5px;" width="600" height="600">>
 		Oops ... your browser doesn't support the HTML5 canvas element
 	</canvas>
+    <!-- <script type="text/javascript">
+        document.getElementById('gl-canvas').style.cursor = "none";
+      </script> -->
     <div>
             <button id="au" onclick="arcU();">Arc up</button>
             <button id="ad" onclick="arcD();">Arc down</button> <br>
