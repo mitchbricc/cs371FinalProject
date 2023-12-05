@@ -15,7 +15,7 @@ let at = vec3(0.0, 0.0, -5.0);
 let up = vec3(0.0, 1.0, 0.0);
 
 let eyeX=0, eyeY=0, eyeZ=5;
-let eye;
+let eye = vec3(eyeX,eyeY,eyeZ);
 
 //globals for mouse effects
 let mouseOldX, mouseOldY,mouseX,mouseY; 
@@ -85,9 +85,13 @@ function init() {
 	//Get graphics context
     canvas = document.getElementById( "gl-canvas" );
 
-    //add event listeners
-    canvas.addEventListener( "mousemove", MouseMove, false);
-    canvas.addEventListener( "click", ClickOnCanvas, false);
+    //to start listening for user input
+    document.addEventListener("pointerlockchange", lockChangeAlert, false);
+    canvas.addEventListener("click", async () => {
+        await canvas.requestPointerLock({
+          unadjustedMovement: true,
+        });
+      });
 
 	let  options = {  // no need for alpha channel in this program; depth buffer is needed
 		alpha: false,
@@ -254,6 +258,7 @@ function reset(x,y){
     draw();
 }
 
+
 //-------------------Utility Methods-----------------------------
 //Extract the new eye coordinates from the modelview matrix. This can be done as follows:
 //Recall that [last column of modelview matrix] = [u, v, n].[-e_x, -e_y,-e_z]^T
@@ -293,41 +298,45 @@ function multM3V3( u, v ) {
     return result;
 }
 
-//set listener for mouse movement to effect camera
-function MouseMove(e){
-    if(!(mouseOldX == null || mouseOldY == null)){
-        const canvas = gl.canvas;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-    
-        mouseX = x / rect.width  *  2 - 1;
-        mouseY = y / rect.height * -2 + 1;
 
-        document.getElementById("demo2").innerHTML = mouseX + "," + mouseY;
+function lockChangeAlert() {
+    if (document.pointerLockElement === canvas) {
+        //document.getElementById("demo").innerHTML = "lock";
+        cursorHidden = true;
+        canvas.addEventListener( "mousemove", updatePosition, false);
+        document.getElementById("demo").innerHTML = "lock:"+glX+","+glY;
+    } 
+    else {
+        document.getElementById("demo").innerHTML = "unlock";
+        cursorHidden = false;
+        canvas.removeEventListener("mousemove",updatePosition,false);
     }
+  }
+  const lookDistance = 10;
+  let APP = 30/600;
+  let eyeAngleX=180,eyeAngleY=0;
+  function calculateAt(angleX,angleY){
+    eyeAngleX += angleX;
+    eyeAngleY += angleY;
+    if(eyeAngleY>89){
+        eyeAngleY = 89;
+    }
+    if(eyeAngleY<-89){
+        eyeAngleY = -89;
+    }
+    
+
+    let atx = lookDistance * Math.sin(radians(-eyeAngleX)) * Math.cos(radians(eyeAngleY));
+    let aty = lookDistance * Math.sin(radians(-eyeAngleY));
+    let atz = lookDistance * Math.cos(radians(eyeAngleX));
+    document.getElementById("demo2").innerHTML = eyeAngleY;
+    at = vec3(atx + eye[0],aty + eye[1],atz + eye[2]);
 }
-//set listener for mouse click
-function ClickOnCanvas(e){
-    
-    if(cursorHidden){
-        document.getElementById('gl-canvas').style.cursor = "auto";
-        cursorHidden = !cursorHidden;
-        mouseOldX = null;
-        mouseOldY = null;
-        //document.getElementById("demo2").innerHTML = "unhide";
-    }
-    else{
-        document.getElementById('gl-canvas').style.cursor = "none";
-        cursorHidden = !cursorHidden;
-        const canvas = gl.canvas;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-    
-        mouseOldX = x / rect.width  *  2 - 1;
-        mouseOldY = y / rect.height * -2 + 1;
-        //document.getElementById("demo2").innerHTML = "hide";
-    }
-
+  function updatePosition(e) {
+    let angleX = e.movementX*APP;
+    let angleY = e.movementY*APP;
+    calculateAt(angleX,angleY);
+    //document.getElementById("demo2").innerHTML = at;
+    modelViewMatrix = lookAt(eye, at, up);
+    draw();
 }
