@@ -92,6 +92,8 @@ function init() {
           unadjustedMovement: true,
         });
       });
+      // Register the event handler to be called on key press
+    window.addEventListener("keydown",keydown,false);
 
 	let  options = {  // no need for alpha channel in this program; depth buffer is needed
 		alpha: false,
@@ -146,37 +148,45 @@ function init() {
  function draw() { 
     //Clear screen and depth buffer
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
+    //var ctx = canvas.getContext("2d");
+    //ctx.clearRect(0, 0, canvas.width, canvas.height);
     //send uniform data 
     gl.uniformMatrix4fv(uniformModelViewMatrix, false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(uniformProjectionMatrix, false, flatten(projectionMatrix));
     
     //render
     gl.drawArrays( gl.TRIANGLES, 0, coords.length);
+    
 }
 //Button handlers to be implemented
 function increaseZ(){
-    modelViewMatrix = mult(translate(0,0,-T_STEP),modelViewMatrix);
+    eye[2] += T_STEP;
+    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function decreaseZ(){
-    modelViewMatrix = mult(translate(0,0,T_STEP),modelViewMatrix);
+    eye[2] += -T_STEP;
+    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function increaseX(){
-    modelViewMatrix = mult(translate(-T_STEP,0,0),modelViewMatrix);
+    eye[0] += T_STEP;
+    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function decreaseX(){
-    modelViewMatrix = mult(translate(T_STEP,0,0),modelViewMatrix);
+    eye[0] += -T_STEP;
+    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function increaseY(){
-    modelViewMatrix = mult(translate(0,-T_STEP,0),modelViewMatrix);
+    eye[1] += T_STEP;
+    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function decreaseY(){
-    modelViewMatrix = mult(translate(0,T_STEP,0),modelViewMatrix);
+    eye[0] += T_STEP;
+    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function arcU(){ 
@@ -307,7 +317,7 @@ function lockChangeAlert() {
         document.getElementById("demo").innerHTML = "lock:"+glX+","+glY;
     } 
     else {
-        document.getElementById("demo").innerHTML = "unlock";
+        //document.getElementById("demo").innerHTML = "unlock";
         cursorHidden = false;
         canvas.removeEventListener("mousemove",updatePosition,false);
     }
@@ -324,8 +334,6 @@ function lockChangeAlert() {
     if(eyeAngleY<-89){
         eyeAngleY = -89;
     }
-    
-
     let atx = lookDistance * Math.sin(radians(-eyeAngleX)) * Math.cos(radians(eyeAngleY));
     let aty = lookDistance * Math.sin(radians(-eyeAngleY));
     let atz = lookDistance * Math.cos(radians(eyeAngleX));
@@ -340,3 +348,39 @@ function lockChangeAlert() {
     modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
+
+// Keystroke handler
+function keydown(event) {
+    document.getElementById("demo").innerHTML = event.code;
+    switch (event.code) {
+        case "KeyW":
+            decreaseZ();
+            break;
+        case "KeyS":
+            increaseZ();
+            break;    
+        case "KeyA":
+            decreaseX();
+            break;  
+        case "KeyD":
+            increaseX();
+            break;  
+        case "Space":
+            jump();
+            break;
+        default:return; // Skip drawing if no effective action
+    }
+}
+function jump(){
+
+}
+let score = 4;
+function drawScore() {
+
+    document.getElementById("demo2").innerHTML = "score?";
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("score: goes here", canvas.width - 65, 20);
+  }
