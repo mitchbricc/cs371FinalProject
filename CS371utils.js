@@ -1,4 +1,3 @@
-//This is a combination of the initshaders and the MV utility files from Angel/Schreiner
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -391,6 +390,7 @@ function rotateX(theta) {
       0.0,  0.0,  0.0, 1.0 );
   return rx;
 }
+
 function rotateY(theta) {
   var c = Math.cos( radians(theta) );
   var s = Math.sin( radians(theta) );
@@ -400,6 +400,7 @@ function rotateY(theta) {
       0.0, 0.0,  0.0, 1.0 );
   return ry;
 }
+
 function rotateZ(theta) {
   var c = Math.cos( radians(theta) );
   var s = Math.sin( radians(theta) );
