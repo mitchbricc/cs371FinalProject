@@ -114,6 +114,7 @@ function init(){
     shapelength = shape.indices.length;
     sphere = {
         shape: shape,
+        modelTransform: mat4(),
         translation: translate(0,0,0),
         materialDiffuse:  vec4( .05, 1, .05, 1), 
         materialAmbient:  vec4( .05, 1, .05, 1), 
@@ -122,59 +123,122 @@ function init(){
         length: shapelength,
     }
 
-    shape = createTruncatedConeVertices(0.2,0,0.7,15,10,true,true);
-    shapelength = shape.indices.length;
-    cone = {
-        shape: shape,
-        translation: translate(.7,-.5,0),
-        materialDiffuse:  vec4( 0.2, 0.2, 1.0, 1), 
-        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1), 
-        materialSpecular: vec4( .2, .2, .2, 1),
-        materialShininess: 10.0,
-        length: shapelength,
-    }
+    // shape = createTruncatedConeVertices(0.2,0,0.7,15,10,true,true);
+    // shapelength = shape.indices.length;
+    // cone = {
+    //     shape: shape,
+    //     translation: translate(.7,-.5,0),
+    //     materialDiffuse:  vec4( 0.2, 0.2, 1.0, 1), 
+    //     materialAmbient:  vec4( 1.0, 1.0, 1.0, 1), 
+    //     materialSpecular: vec4( .2, .2, .2, 1),
+    //     materialShininess: 10.0,
+    //     length: shapelength,
+    // }
 
-    shape = createTruncatedConeVertices(0.2,0.2,0.8,15,10,true,true);
-    shapelength = shape.indices.length;
-    cylinder = {
-        shape: shape,
-        translation: translate(0,-.4,0),
-        materialDiffuse:  vec4( 1, .1, .1, 1), 
-        materialAmbient:  vec4( 1, .8, .8, 1), 
-        materialSpecular: vec4( 1, 1, 1, 1),
-        materialShininess: 100.0,
-        length: shapelength,
-    }
+    // shape = createTruncatedConeVertices(0.2,0.2,0.8,15,10,true,true);
+    // shapelength = shape.indices.length;
+    // cylinder = {
+    //     shape: shape,
+    //     translation: translate(0,-.4,0),
+    //     materialDiffuse:  vec4( 1, .1, .1, 1), 
+    //     materialAmbient:  vec4( 1, .8, .8, 1), 
+    //     materialSpecular: vec4( 1, 1, 1, 1),
+    //     materialShininess: 100.0,
+    //     length: shapelength,
+    // }
 
-    shape = createCubeVertices(.4);
+    shape = createCubeVertices(2);
     shapelength = shape.indices.length;
-    cube = {
+    wall1 = {
         shape: shape,
-        translation: translate(-.6,-.5,0),
+        modelTransform: mat4(),
+        translation: translate(-1.9,0,0),
         materialDiffuse: vec4( 1, 1, 0.01, 1), 
         materialAmbient: vec4( 1, 1, 0.01, 1 ),
         materialSpecular: vec4( 1, 1, 0.01, 1 ),
         materialShininess: 10.0,
         length: shapelength,
     }
+    shape = createCubeVertices(2);
+    shapelength = shape.indices.length;
+    wall2 = {
+        shape: shape,
+        modelTransform: mat4(),
+        translation: translate(1.9,0,0),
+        materialDiffuse: vec4( 1, 1, 0.01, 1), 
+        materialAmbient: vec4( 1, 1, 0.01, 1 ),
+        materialSpecular: vec4( 1, 1, 0.01, 1 ),
+        materialShininess: 10.0,
+        length: shapelength,
+    }
+    shape = createCubeVertices(2);
+    shapelength = shape.indices.length;
+    wall3 = {
+        shape: shape,
+        modelTransform: mat4(),
+        translation: translate(0,-1.9,0),
+        materialDiffuse: vec4( 1, 1, 0.01, 1), 
+        materialAmbient: vec4( 1, 1, 0.01, 1 ),
+        materialSpecular: vec4( 1, 1, 0.01, 1 ),
+        materialShininess: 10.0,
+        length: shapelength,
+    }
+    shape = createCubeVertices(2);
+    shapelength = shape.indices.length;
+    wall4 = {
+        shape: shape,
+        modelTransform: mat4(),
+        translation: translate(0,1.9,0),
+        materialDiffuse: vec4( 1, 1, 0.01, 1), 
+        materialAmbient: vec4( 1, 1, 0.01, 1 ),
+        materialSpecular: vec4( 1, 1, 0.01, 1 ),
+        materialShininess: 10.0,
+        length: shapelength,
+    }
+    shape = createCubeVertices(2);
+    shapelength = shape.indices.length;
+    wall5 = {
+        shape: shape,
+        modelTransform: mat4(),
+        translation: translate(0,0,-2),
+        materialDiffuse: vec4( 1, 1, 0.01, 1), 
+        materialAmbient: vec4( 1, 1, 0.01, 1 ),
+        materialSpecular: vec4( 1, 1, 0.01, 1 ),
+        materialShininess: 10.0,
+        length: shapelength,
+    }
+    
+
+    //create each wall in the arena (cubes for now)
+
+
 
     //array to use in draw method loop
     //allShapes = [sphere,cone,cylinder,cube];
-    allShapes = [sphere];
+    allShapes = [wall1,wall2,wall3,wall4,wall5,sphere];
 
    
     //setViewParams(coords); // Attempt to size the viewing window based on object's coords from mesh file; don't need this if drawing parametric shapes
     
     //set up vertex array object:
     //you will need to set up multiple such vertex array objects for the lab       
-    //vaoSphere = setUpVertexObject(sphere);
+    vaoWall1 = setUpVertexObject(wall1.shape);
+    vaoWall2 = setUpVertexObject(wall2.shape);
+    vaoWall3 = setUpVertexObject(wall3.shape);
+    vaoWall4 = setUpVertexObject(wall4.shape);
+    vaoWall5 = setUpVertexObject(wall5.shape);
     vaoSphere = setUpVertexObject(sphere.shape);
-    vaoCone = setUpVertexObject(cone.shape);
-    vaoCylinder = setUpVertexObject(cylinder.shape);
-    vaoCube = setUpVertexObject(cube.shape);
+
+
+
+
+
+    //vaoCone = setUpVertexObject(cone.shape);
+    //vaoCylinder = setUpVertexObject(cylinder.shape);
 
     //array to use in draw method loop
-    allVao = [vaoSphere,vaoCone,vaoCylinder,vaoCube];
+    //allVao = [vaoSphere,vaoCone,vaoCylinder,vaoCube];
+    allVao = [vaoWall1,vaoWall2,vaoWall3,vaoWall4,vaoWall5,vaoSphere]
       
     //set up uniform variables
     uniformModelView = gl.getUniformLocation(program, "u_modelViewMatrix");
@@ -210,6 +274,7 @@ function init(){
     gl.depthFunc(gl.LEQUAL);
     gl.enable(gl.POLYGON_OFFSET_FILL);
     gl.polygonOffset(1.0, 2.0);     
+
     
     draw();
 }
@@ -233,7 +298,7 @@ function draw(){
     //These model matrices should be combined with the view matrix to get the modelview matrix for each shape
     //loop to go through each shape and draw them on screen
     for(let i = 0; i<allShapes.length; i++){
-        //modelViewMatrix = mult(modelViewMatrix,allShapes[i].translation);
+        modelViewMatrix = mult(allShapes[i].modelTransform,allShapes[i].translation);
         gl.uniformMatrix4fv( uniformModelView, false, flatten(modelViewMatrix) );
         drawVertexObject(allVao[i], allShapes[i].length, allShapes[i].materialAmbient, allShapes[i].materialDiffuse, allShapes[i].materialSpecular, allShapes[i].materialShininess); 
     }
