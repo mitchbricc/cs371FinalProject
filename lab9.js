@@ -48,11 +48,7 @@ let materialSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
  //metallic?
 let materialShininess = 100.0;          
 
-//You will not use a mesh but parametric shapes                         for teapot
-let coords = myMesh.vertices[0].values;
-let indices = myMesh.connectivity[0].indices;
-//Normals provided by Meshlab in json file
-let normals = myMesh.vertices[1].values;
+
 
 let nf;
 
@@ -155,8 +151,29 @@ function init(){
         materialSpecular: vec4( 0.4, 0.4, 0.4, 1.0 ),
         materialShininess: 400.0,
     };
+    //You will not use a mesh but parametric shapes                         for teapot
+    let coords = ghost.vertices[0].values;
+    let indices = ghost.connectivity[0].indices;
+    //Normals provided by Meshlab in json file
+    let normals = ghost.vertices[1].values;
+    let texcoords = 0;
+    shape = {
+        positions: coords,
+        normals: normals,
+        texcoord: texcoords,
+        indices: indices,
+    };
+    let Ghost = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(0,.4,0),scalem(.1,.1,-0.1)),
+        materialDiffuse:  vec4( 0.95, 0.2, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 0.4, 0.4, 0.4, 1.0 ),
+        materialShininess: 400.0,
+    }
     
-    shapes = [sphere,cone,cube,cylinder];
+    shapes = [sphere,cone,cube,cylinder,Ghost];
         
     //set up uniform variables
     uniformModelView = gl.getUniformLocation(program, "u_modelViewMatrix");
@@ -403,27 +420,21 @@ function drawScore() {
 //Button handlers to be implemented
 function increaseZ(){
     eye[2] += T_STEP;
-    draw();
 }
 function decreaseZ(){
     eye[2] += -T_STEP;
-    draw();
 }
 function increaseX(){
     eye[0] += T_STEP;
-    draw();
 }
 function decreaseX(){
     eye[0] += -T_STEP;
-    draw();
 }
 function increaseY(){
     eye[1] += T_STEP;
-    draw();
 }
 function decreaseY(){
     eye[0] += T_STEP;
-    draw();
 }
 
 
