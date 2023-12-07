@@ -243,6 +243,8 @@ function init(){
     //set up uniform variables
     uniformModelView = gl.getUniformLocation(program, "u_modelViewMatrix");
     uniformProjection = gl.getUniformLocation(program, "u_projectionMatrix");
+    //uniformModelTransform = gl.getUniformLocation(program, "u_modelTransform");
+
  
  
     // Retrieve the nearFar element
@@ -273,7 +275,8 @@ function init(){
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
     gl.enable(gl.POLYGON_OFFSET_FILL);
-    gl.polygonOffset(1.0, 2.0);     
+    gl.polygonOffset(1.0, 2.0);  
+       
 
     
     draw();
@@ -284,9 +287,8 @@ function draw(){
     let eye = vec3( radius*Math.sin(theta)*Math.cos(phi), 
                     radius*Math.sin(theta)*Math.sin(phi),
                     radius*Math.cos(theta));
-
     let modelViewMatrix = lookAt( eye, at, up );
-    modelViewMatrix = mult(modelTransform,modelViewMatrix);
+    
     projectionMatrix = ortho( left, right, bottom, ytop, near, far );   
     gl.uniformMatrix4fv( uniformProjection, false, flatten(projectionMatrix) );
     
@@ -297,8 +299,14 @@ function draw(){
     //The default parametric shapes all draw at the origin; you may need to use model matrices for each of them to place them in the scene
     //These model matrices should be combined with the view matrix to get the modelview matrix for each shape
     //loop to go through each shape and draw them on screen
+   
+
+
     for(let i = 0; i<allShapes.length; i++){
-        modelViewMatrix = mult(allShapes[i].modelTransform,allShapes[i].translation);
+        modelTransform = mult(allShapes[i].translation,modelTransform);
+        //modelViewMatrix = mult(modelTransform,modelViewMatrix);
+        //modelViewMatrix = mult(modelViewMatrix,allShapes[i].translation);
+        //modelViewMatrix = mult(allShapes[i].modelTransform,allShapes[i].translation);
         gl.uniformMatrix4fv( uniformModelView, false, flatten(modelViewMatrix) );
         drawVertexObject(allVao[i], allShapes[i].length, allShapes[i].materialAmbient, allShapes[i].materialDiffuse, allShapes[i].materialSpecular, allShapes[i].materialShininess); 
     }
