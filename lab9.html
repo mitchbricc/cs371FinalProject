@@ -9,60 +9,68 @@
         #version 300 es
         in  vec4 a_coords;
         in  vec3 a_normals;
-        in vec2 a_texCoord;
+        in  vec2 a_texCoord;
 
         uniform mat4 u_modelViewMatrix;
         uniform mat4 u_projectionMatrix;
         uniform vec4 ambientProduct, diffuseProduct, specularProduct;
-        uniform vec4 lightPosition;
+        uniform vec4 light1Position;
+        uniform vec4 light2Position;
         uniform float shininess;
 
         out vec4 t_color;
         out vec2 v_texCoord;
-        uniform sampler2D u_textureMap;
 
         void main() {
-            // Transform vertex position into eye coordinates
+            //light one init
             vec3 pos = -(u_modelViewMatrix * a_coords).xyz;
-            
-            // Here the light is part of the model
-            vec3 light = (u_modelViewMatrix * lightPosition).xyz;
+            vec3 light1 = (u_modelViewMatrix * light1Position).xyz;
+            vec3 L1 = normalize( light1 - pos );
+            vec3 E1 = normalize( -pos );
+            vec3 H1 = normalize( L1 + E1 );
 
-            // Normalized vector from pos to light
-            vec3 L = normalize( light - pos );
+            vec3 light2 = (u_modelViewMatrix * light2Position).xyz;
+            vec3 L2 = normalize( light2 - pos );
+            vec3 E2 = normalize( -pos );
+            vec3 H2 = normalize( L2 + E2 );
 
-            // Next two lines compute halfway vector, which is unnecessary in diffuse.
-            vec3 E = normalize( -pos );
-            vec3 H = normalize( L + E );
-            
             vec4 NN = vec4(a_normals,0);
 
             // Transform vertex normal into eye coordinates
             vec3 N = normalize( (u_modelViewMatrix*NN).xyz);
+            //vec4 N = Tranpose(Inverse(u_modelViewMatrix));
             // Note the above line is valid in this case, but not in general for modelview matrices used to transform the normals
             // If you have an arbitrary sequence of modeling transformations that you are constantly applying to the object,
             // then the normals of that object are transformed by Tranpose(Inverse(u_modelViewMatrix)), not u_modelViewMatrix
             // For just rotations around the origin (and perhaps some initial modeling applied once), this is the same as u_modelViewMatrix, so we stick with that here
 
-            // Compute terms in the illumination equation
             vec4 ambient = ambientProduct;
 
-            float Kd = max( dot(L, N), 0.0 );
-            vec4  diffuse = Kd*diffuseProduct;
-
-            float Ks = pow( max(dot(N, H), 0.0), shininess );
-            vec4  specular = Ks * specularProduct;
-            
-            if( dot(L, N) < 0.0 ) {
-                specular = vec4(0.0, 0.0, 0.0, 1.0);
+            //light 1
+            float Kd1 = max( dot(L1, N), 0.0 );
+            vec4  diffuse1 = Kd1*diffuseProduct;
+            float Ks1 = pow( max(dot(N, H1), 0.0), shininess );
+            vec4  specular1 = Ks1 * specularProduct;
+            if( dot(L1, N) < 0.0 ) {
+                specular1 = vec4(0.0, 0.0, 0.0, 1.0);
             } 
+            
+            //light 2
+            float Kd2 = max( dot(L2, N), 0.0 );
+            vec4  diffuse2 = Kd2*diffuseProduct;
+            float Ks2 = pow( max(dot(N, H2), 0.0), shininess );
+            vec4  specular2 = Ks2 * specularProduct;
+            if( dot(L2, N) < 0.0 ) {
+                specular2 = vec4(0.0, 0.0, 0.0, 1.0);
+            } 
+            
 
             gl_Position = u_projectionMatrix * u_modelViewMatrix * a_coords;
-            t_color = ambient + diffuse + specular;
-
-            v_texCoord = a_texCoord;
+            t_color = ambient + diffuse1 + diffuse2 + specular1 + specular2;
             
             t_color.a = 1.0;
+
+            v_texCoord = a_texCoord;
         }    
 
 	</script>
@@ -70,15 +78,17 @@
 	<script id="fragment-shader" type="x-shader/x-fragment">
 		#version 300 es
 		precision mediump float;
+        
         in vec4 t_color;
         in vec2 v_texCoord;
+
 		out vec4 f_color;
 
         uniform sampler2D u_textureMap;
 
 		void main() {
-            //f_color = v_color * texture(u_textureMap, v_texCoord)
-            f_color = t_color * texture(u_textureMap, v_texCoord);
+			//f_color = t_color;
+            f_color = t_color * texture(u_textureMap,v_texCoord);
 		}
 	</script>
 	<!--   End GLSL 3.0 Shader code -->
@@ -86,7 +96,6 @@
 	<!--   JS include files -->
     
     <!--By changing the JSON file, can view different objects-->
-    <script type="text/javascript" src="models/teapot.js"></script>
 	<script type="text/javascript" src="CS371utils.js"></script>
 	<script type="text/javascript" src="lab9.js"></script>
     <script type="text/javascript" src="shapes.js"></script>
@@ -115,9 +124,26 @@
             <button id = "Button10">Narrower</button>
             <button id = "Button11">Higher</button>
             <button id = "Button12">Shorter</button>
+            <br>
+            <button id="up" onclick="upT();">up</button>
+            <button id="down" onclick="downT();">down</button>
+            <button id="left" onclick="leftT();">left</button>
+            <button id="right" onclick="rightT();">right</button>
+            <button id="front" onclick="frontT();">front</button>
+            <button id="back" onclick="backT();">back</button>           
+            <br>
+            <button id="larger" onclick="larger();">larger</button>
+            <button id="smaller" onclick="smaller();">smaller</button> 
+            <br>
+            <button id="rx" onclick="rX();">Rotate X</button>
+            <button id="ry" onclick="rY();">Rotate Y</button>
+            <button id="rz" onclick="rZ();">Rotate Z</button>            
+            <button id="reset" onclick="reset();">reset</button> 
+
+
             <p>In case you don't see the entire object, you may have to play with the Near, Far, and R settings to get the appropriate view volume </p> 
             <p id="nearFar">The near and far values are displayed here.</p>            
 	</div>
-    <img id = "texImage" src = "brick-texture.jpg"hidden></img>
+    <img id = "texImage" src = "brick.jpg" hidden></img>
 </body>
 </html>

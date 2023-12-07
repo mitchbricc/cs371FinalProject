@@ -49,7 +49,7 @@ function createSphereVertices(
           let uy = cosPhi;
           let uz = sinTheta * sinPhi;
           
-          positions.push(vec3(radius * ux-.6, radius * uy, radius * uz));
+          positions.push(vec3(radius * ux, radius * uy, radius * uz));
           normals.push(vec3(ux, uy, uz));
           texcoords.push(vec2(1 - u, v));
         }
@@ -88,9 +88,7 @@ function createTruncatedConeVertices(
     radialSubdivisions,
     verticalSubdivisions,
     opt_topCap,
-    opt_bottomCap,
-    inX,
-    inY) {
+    opt_bottomCap) {
         
     if (radialSubdivisions < 3) {
         throw new Error('radialSubdivisions must be 3 or greater');
@@ -147,7 +145,7 @@ function createTruncatedConeVertices(
         for (let ii = 0; ii < vertsAroundEdge; ++ii) {
             let sin = Math.sin(ii * Math.PI * 2 / radialSubdivisions);
             let cos = Math.cos(ii * Math.PI * 2 / radialSubdivisions);
-            positions.push(vec3(sin * ringRadius+inX, y+inY, cos * ringRadius));
+            positions.push(vec3(sin * ringRadius, y, cos * ringRadius));
             if (yy < 0) {
                 normals.push(vec3(0, -1, 0));
             } else if (yy > verticalSubdivisions) {
@@ -182,7 +180,7 @@ function createTruncatedConeVertices(
 }
 
 //Modified from webgl2fundamentals.org
-function createCubeVertices(size,inX,inY) {
+function createCubeVertices(size) {
     size = size || 1;
     let k = size / 2;
 
@@ -196,14 +194,14 @@ function createCubeVertices(size,inX,inY) {
     ];
 
     let cornerVertices = [
-        [-k+inX, -k+inY, -k],
-        [+k+inX, -k+inY, -k],
-        [-k+inX, +k+inY, -k],
-        [+k+inX, +k+inY, -k],
-        [-k+inX, -k+inY, +k],
-        [+k+inX, -k+inY, +k],
-        [-k+inX, +k+inY, +k],
-        [+k+inX, +k+inY, +k],
+        [-k, -k, -k],
+        [+k, -k, -k],
+        [-k, +k, -k],
+        [+k, +k, -k],
+        [-k, -k, +k],
+        [+k, -k, +k],
+        [-k, +k, +k],
+        [+k, +k, +k],
     ];
 
     let faceNormals = [
@@ -317,9 +315,4 @@ function print(name, mv, is2D) {
         str += parseFloat(String(mv[mv.length-1])).toFixed(2)+" ]\n";       
     }
     console.log(str);
-}
-
-function moveSphere(coords){
-
-
 }
