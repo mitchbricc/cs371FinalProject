@@ -151,7 +151,7 @@ function init(){
         materialSpecular: vec4( 0.4, 0.4, 0.4, 1.0 ),
         materialShininess: 400.0,
     };
-    //You will not use a mesh but parametric shapes                         for teapot
+    //You will not use a mesh but parametric shapes                         for ghost
     let coords = ghost.vertices[0].values;
     let indices = ghost.connectivity[0].indices;
     //Normals provided by Meshlab in json file
