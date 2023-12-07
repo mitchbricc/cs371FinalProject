@@ -13,6 +13,8 @@
 
         uniform mat4 u_modelViewMatrix;
         uniform mat4 u_projectionMatrix;
+        uniform vec4 u_modelTransform;
+
         uniform vec4 ambientProduct, diffuseProduct, specularProduct;
         uniform vec4 light1Position;
         uniform vec4 light2Position;
@@ -23,6 +25,7 @@
 
         void main() {
             //light one init
+            //u_modelViewMatrix = u_modelViewMatrix + u_modelTransform;
             vec3 pos = -(u_modelViewMatrix * a_coords).xyz;
             vec3 light1 = (u_modelViewMatrix * light1Position).xyz;
             vec3 L1 = normalize( light1 - pos );
@@ -78,17 +81,15 @@
 	<script id="fragment-shader" type="x-shader/x-fragment">
 		#version 300 es
 		precision mediump float;
-        
         in vec4 t_color;
         in vec2 v_texCoord;
-
 		out vec4 f_color;
 
         uniform sampler2D u_textureMap;
 
 		void main() {
-			//f_color = t_color;
-            f_color = t_color * texture(u_textureMap,v_texCoord);
+            //f_color = v_color * texture(u_textureMap, v_texCoord)
+            f_color = t_color * texture(u_textureMap, v_texCoord);
 		}
 	</script>
 	<!--   End GLSL 3.0 Shader code -->
@@ -96,6 +97,7 @@
 	<!--   JS include files -->
     
     <!--By changing the JSON file, can view different objects-->
+    <script type="text/javascript" src="models/teapot.js"></script>
 	<script type="text/javascript" src="CS371utils.js"></script>
 	<script type="text/javascript" src="lab9.js"></script>
     <script type="text/javascript" src="shapes.js"></script>
@@ -126,26 +128,9 @@
             <button id = "Button10">Narrower</button>
             <button id = "Button11">Higher</button>
             <button id = "Button12">Shorter</button>
-            <br>
-            <button id="up" onclick="upT();">up</button>
-            <button id="down" onclick="downT();">down</button>
-            <button id="left" onclick="leftT();">left</button>
-            <button id="right" onclick="rightT();">right</button>
-            <button id="front" onclick="frontT();">front</button>
-            <button id="back" onclick="backT();">back</button>           
-            <br>
-            <button id="larger" onclick="larger();">larger</button>
-            <button id="smaller" onclick="smaller();">smaller</button> 
-            <br>
-            <button id="rx" onclick="rX();">Rotate X</button>
-            <button id="ry" onclick="rY();">Rotate Y</button>
-            <button id="rz" onclick="rZ();">Rotate Z</button>            
-            <button id="reset" onclick="reset();">reset</button> 
-
-
             <p>In case you don't see the entire object, you may have to play with the Near, Far, and R settings to get the appropriate view volume </p> 
             <p id="nearFar">The near and far values are displayed here.</p>            
 	</div>
-    <img id = "texImage" src = "brick.jpg" hidden></img>
+    <img id = "texImage" src = "brick-texture.jpg"hidden></img>
 </body>
 </html>

@@ -8,34 +8,26 @@ let right = 1;
 let ytop = 1;
 let bottom = -1;
 
+let radius = 0.1;  //MUST NOT BE ZERO
+let theta  = -40* Math.PI/180.0;
+let phi    = -35* Math.PI/180.0;
+let rotation_by_5_deg = 5.0 * Math.PI/180.0;
+
 const T_STEP = 0.1;
 const R_STEP = 10.0;
 const S_STEP = 0.1;
 
-let radius = 0.1;  //MUST NOT BE ZERO
-let theta  = 0 * Math.PI/180.0;
-let phi    = 0 * Math.PI/180.0;
-// let theta = 0;
-// let phi = 0;
-let rotation_by_5_deg = 5.0 * Math.PI/180.0;
-
-let at = vec3(0.0, 0.0, -5.0);
+//eye variables
+let at = vec3(0.0, 0.0, 0.0);
 let up = vec3(0.0, 1.0, 0.0);
 let eyeX=0, eyeY=0, eyeZ=5;
 let eye = vec3(eyeX,eyeY,eyeZ);
-
 //globals for mouse effects
 let cursorHidden = false;
 
-
 let uniformModelView, uniformProjection;
-let modelViewMatrix, projectionMatrix;    
+let modelViewMatrix, projectionMatrix;           
 
-let centroid;  
-let modelTransform;     
-
-
-//DONT TOUCH
 //Leave light properties and position unchanged
 //Ldr, Ldg, Ldb, Lsr, Lsg, Lsb, Lar, Lag, Lab
 let lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 ); // white light
@@ -45,31 +37,30 @@ let lightSpecular = vec4( 0.9, 0.9, 0.9, 1.0 );
 //Position is in homogeneous coordinates
 //If w =1.0, we are specifying a finite (x,y,z) location
 //If w =0.0, light at infinity
-let light1Position = vec4(1.0, 1.0, 1.0, 0.0 );
-let light2Position = vec4(-1.0, -1.0, -1.0, 0.0 );
+let lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
+let light2Position = vec4(-0.5, 0.5, 0.0, 0.0 );
 
+///Material properties with ambient, diffuse, specular                      one for each object
+//You should declare these for each 3d shape; think of using arrays
+let materialDiffuse =  vec4( 0.2, 0.2, 1.0, 1.0); 
+let materialAmbient =  vec4( 1.0, 1.0, 1.0, 1.0 ); 
+let materialSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
+ //metallic?
+let materialShininess = 100.0;          
 
+//You will not use a mesh but parametric shapes                         for teapot
+let coords = myMesh.vertices[0].values;
+let indices = myMesh.connectivity[0].indices;
+//Normals provided by Meshlab in json file
+let normals = myMesh.vertices[1].values;
 
 let nf;
 
 //global variables to help us with vertex array objects
 let program;
-let shapelength;
+let shapes;
 
-let sphere;
-let vaoSphere;
-
-let cone;
-let vaoCone;
-
-let cylinder;
-let vaoCylinder;
-
-let cube;
-let vaoCube;
-
-let allShapes;
-let allVao;
+let texture;
 
 function configureTexture( image, program ) {
     texture = gl.createTexture();
@@ -84,13 +75,19 @@ function configureTexture( image, program ) {
          
     //Set filters and parameters
     gl.generateMipmap(gl.TEXTURE_2D);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    
+    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT );
+    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT );
+    
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT );
+    
     
     //Link texture to a sampler in fragment shader
     gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
 }
-
 
 function init(){
     
@@ -118,84 +115,62 @@ function init(){
 	program = initShaders( gl, "vertex-shader", "fragment-shader" );
 	gl.useProgram( program );
 
-    modelTransform=mat4();
-    
- 
-    //This sets the shape variable to be the data from the mesh file
-    //For the lab, you should replace the shape variable with perhaps an array
-    //and populate  the array with the various parametric shapes   
-    
-    //create each shape object with modified shape methods, noticed that when you translate the shape it changes the lighting
-    shape = createSphereVertices(0.2,30,30, 0, Math.PI, 0,2*Math.PI);
-    shapelength = shape.indices.length;
-    sphere = {
+    let shape = createSphereVertices(.25,50,50);
+    let sphere = {
         shape: shape,
-        translation: translate(0,0,0),
-        materialDiffuse:  vec4( .05, 1, .05, 1), 
-        materialAmbient:  vec4( .05, 1, .05, 1), 
-        materialSpecular: vec4( .8, 1, .8, 1),
-        materialShininess: 100.0,
-        length: shapelength,
-    }
-
-    shape = createTruncatedConeVertices(0.2,0,0.7,15,10,true,true);
-    shapelength = shape.indices.length;
-    cone = {
+        vao: setUpVertexObject(shape),
+        translation: translate(-.6,.3,0),
+        materialDiffuse:  vec4(  0.15,0.96, 0.17, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 400.0,
+    };
+    shape = createTruncatedConeVertices(.2,0,1,50,50);
+    let cone = {
         shape: shape,
+        vao: setUpVertexObject(shape),
         translation: translate(.7,-.5,0),
-        materialDiffuse:  vec4( 0.2, 0.2, 1.0, 1), 
-        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1), 
-        materialSpecular: vec4( .2, .2, .2, 1),
-        materialShininess: 10.0,
-        length: shapelength,
-    }
-
-    shape = createTruncatedConeVertices(0.2,0.2,0.8,15,10,true,true);
-    shapelength = shape.indices.length;
-    cylinder = {
-        shape: shape,
-        translation: translate(0,-.4,0),
-        materialDiffuse:  vec4( 1, .1, .1, 1), 
-        materialAmbient:  vec4( 1, .8, .8, 1), 
-        materialSpecular: vec4( 1, 1, 1, 1),
+        materialDiffuse:  vec4( 0.2, 0.2, 1.0, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialShininess: 100.0,
-        length: shapelength,
-    }
-
+    };
     shape = createCubeVertices(.4);
-    shapelength = shape.indices.length;
-    cube = {
+    let cube = {
         shape: shape,
+        vao: setUpVertexObject(shape),
         translation: translate(-.6,-.5,0),
-        materialDiffuse: vec4( 1, 1, 0.01, 1), 
-        materialAmbient: vec4( 1, 1, 0.01, 1 ),
-        materialSpecular: vec4( 1, 1, 0.01, 1 ),
-        materialShininess: 10.0,
-        length: shapelength,
-    }
-
-    //array to use in draw method loop
-    //allShapes = [sphere,cone,cylinder,cube];
-    allShapes = [sphere];
-
-   
-    //setViewParams(coords); // Attempt to size the viewing window based on object's coords from mesh file; don't need this if drawing parametric shapes
+        materialDiffuse:  vec4( 0.9, 0.9, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 100.0,
+    };
+    shape = createTruncatedConeVertices(.125,.125,.75,50,50);
+    let cylinder = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(0,-.4,0),
+        materialDiffuse:  vec4( 0.95, 0.2, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 0.4, 0.4, 0.4, 1.0 ),
+        materialShininess: 400.0,
+    };
     
-    //set up vertex array object:
-    //you will need to set up multiple such vertex array objects for the lab       
-    //vaoSphere = setUpVertexObject(sphere);
-    vaoSphere = setUpVertexObject(sphere.shape);
-    vaoCone = setUpVertexObject(cone.shape);
-    vaoCylinder = setUpVertexObject(cylinder.shape);
-    vaoCube = setUpVertexObject(cube.shape);
-
-    //array to use in draw method loop
-    allVao = [vaoSphere,vaoCone,vaoCylinder,vaoCube];
-      
+    shapes = [sphere,cone,cube,cylinder];
+        
     //set up uniform variables
     uniformModelView = gl.getUniformLocation(program, "u_modelViewMatrix");
     uniformProjection = gl.getUniformLocation(program, "u_projectionMatrix");
- 
+
+    
+    //Initialize texture
+    let image = new Image();
+    image.crossOrigin = "anonymous";   // ask for CORS permission
+    image.src = document.getElementById("texImage").src; 
+    image.onload = function() {
+        configureTexture( image, program );
+        //draw(); // need this if not using requestAnimationFrame(..) in draw()
+    }
  
     // Retrieve the nearFar element
 	nf = document.getElementById('nearFar');
@@ -213,13 +188,11 @@ function init(){
     document.getElementById("Button9").onclick = function(){left  *= 0.9; right *= 0.9;};
     document.getElementById("Button10").onclick = function(){left *= 1.1; right *= 1.1;};
     document.getElementById("Button11").onclick = function(){ytop  *= 0.9; bottom *= 0.9;};
-    
-
+    document.getElementById("Button12").onclick = function(){ytop *= 1.1; bottom *= 1.1;};
  
     //set up screen
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height); 
     gl.clearColor(0, 0, 0, 1); 
-
     
     //Enable depth testing    
     gl.enable(gl.DEPTH_TEST);
@@ -232,30 +205,27 @@ function init(){
 
 function draw(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    //document.getElementById("demo").innerHTML = eye;
-    let modelViewMatrix = lookAt( eye, at, up );
-    modelViewMatrix = mult(modelTransform,modelViewMatrix);
-    projectionMatrix = perspective( 30, gl.canvas.width/gl.canvas.height, 1, 100 );   
-    gl.uniformMatrix4fv( uniformProjection, false, flatten(projectionMatrix) );
+
+    
     
 	// Display the current near and far values
 	nf.innerHTML = 'near: ' + Math.round(near * 100)/100 + ', far: ' + Math.round(far*100)/100;
     
-    //For the lab, you will need to draw multiple vertex array objects
-    //The default parametric shapes all draw at the origin; you may need to use model matrices for each of them to place them in the scene
-    //These model matrices should be combined with the view matrix to get the modelview matrix for each shape
-    //loop to go through each shape and draw them on screen
-    for(let i = 0; i<allShapes.length; i++){
-        //modelViewMatrix = mult(modelViewMatrix,allShapes[i].translation);
-        gl.uniformMatrix4fv( uniformModelView, false, flatten(modelViewMatrix) );
-        drawVertexObject(allVao[i], allShapes[i].length, allShapes[i].materialAmbient, allShapes[i].materialDiffuse, allShapes[i].materialSpecular, allShapes[i].materialShininess); 
-    }
+    //drawVertexObject(vao, shape.indices.length, materialAmbient, materialDiffuse, materialSpecular, materialShininess); 
+    for(let i = 0;i<shapes.length;i++){
+        let modelViewMatrix = lookAt( eye, at, up );
+        projectionMatrix = perspective( 30, gl.canvas.width/gl.canvas.height, 1, 100 );   
+        gl.uniformMatrix4fv( uniformProjection, false, flatten(projectionMatrix) );
 
+        modelViewMatrix = mult(modelViewMatrix,shapes[i].translation);
+        gl.uniformMatrix4fv( uniformModelView, false, flatten(modelViewMatrix) );
+        drawVertexObject(shapes[i].vao, shapes[i].shape.indices.length, shapes[i].materialAmbient, shapes[i].materialDiffuse, shapes[i].materialSpecular, shapes[i].materialShininess,shapes[i].shape.texCoord); 
+    }
     requestAnimationFrame( draw );
 }
 
 //Loads a VAO and draws it
-function drawVertexObject(vao, iLength, mA, mD, mS, s){
+function drawVertexObject(vao, iLength, mA, mD, mS, s, texCoord){
     let ambientProduct = mult(lightAmbient, mA);
     let diffuseProduct = mult(lightDiffuse, mD);
     let specularProduct = mult(lightSpecular, mS);
@@ -263,10 +233,9 @@ function drawVertexObject(vao, iLength, mA, mD, mS, s){
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),flatten(ambientProduct));
     gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),flatten(diffuseProduct) );
     gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct) );	
-    gl.uniform4fv(gl.getUniformLocation(program, "light1Position"), flatten(light1Position) );    
-    gl.uniform4fv(gl.getUniformLocation(program, "light2Position"), flatten(light2Position) );    
+    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );    
+    gl.uniform4fv(gl.getUniformLocation(program, "light2Position"), flatten(light2Position) );
 
-    
     gl.bindVertexArray(vao);
     gl.drawElements( gl.TRIANGLES, iLength, gl.UNSIGNED_SHORT, 0 );     
 }
@@ -276,9 +245,9 @@ function setUpVertexObject(shape){
     let indices = shape.indices;
     let vertices = shape.positions;
     let normals = shape.normals;
-    let texture = shape.texcoord;
+    let texCoord = shape.texcoord;
  
-    vao = gl.createVertexArray(); 
+    let vao = gl.createVertexArray(); 
     gl.bindVertexArray(vao); 
     
     //set up index buffer, if using
@@ -301,73 +270,18 @@ function setUpVertexObject(shape){
     gl.vertexAttribPointer( attributeNormals, 3, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( attributeNormals );
 
-    //set up textures buffer
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(texture), gl.STATIC_DRAW);
+    let tBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(texCoord), gl.STATIC_DRAW);
+
     let texCoordLoc = gl.getAttribLocation(program, "a_texCoord");
     gl.vertexAttribPointer(texCoordLoc, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(texCoordLoc);
 
-    //Initialize texture
-    let image = new Image();
-    image.src = document.getElementById("texImage").src; 
-    image.onload = function() {
-        configureTexture( image, program );
-    }
     
-    //finalize the vao; not required, but idered good practice
+    //finalize the vao; not required, but considered good practice
     gl.bindVertexArray(null); 
     return vao;
-}
-function upT(){
-    modelTransform = mult(translate(0.0,T_STEP,0.0),modelTransform);
-    draw();
-}
-function leftT(){
-    modelTransform = mult(translate(-T_STEP,0.0,0.0),modelTransform);
-    draw();
-}
-
-function rightT(){
-    modelTransform = mult(translate(T_STEP,0.0,0.0),modelTransform);
-    draw();
-}
-function downT(){
-    modelTransform = mult(translate(0.0,-T_STEP,0.0),modelTransform);
-    draw();
-}
-function frontT(){
-    modelTransform = mult(translate(0.0,0.0,T_STEP),modelTransform);
-    draw();
-}
-function backT(){
-    modelTransform = mult(translate(0.0,0.0,-T_STEP),modelTransform);
-    draw();
-}
-function larger(){
-    modelTransform = mult(scalem(1.0 + S_STEP, 1.0 + S_STEP, 1.0 + S_STEP),modelTransform);    
-    draw();
-}
-function smaller(){
-    modelTransform = mult(scalem(1.0 - S_STEP, 1.0 - S_STEP, 1.0 - S_STEP),modelTransform);    
-    draw();
-}
-function rX(){
-    modelTransform = mult(rotateX(R_STEP),modelTransform);
-    draw();
-}
-function rY(){
-    modelTransform = mult(rotateY(R_STEP),modelTransform);
-    draw();
-}
-function rZ(){
-    modelTransform = mult(rotateZ(R_STEP),modelTransform);
-    draw();
-}
-//Reset
-function reset(){
-    modelTransform = mat4();
-    draw();
 }
 
 //-------------------Utility Methods-----------------------------
@@ -489,37 +403,27 @@ function drawScore() {
 //Button handlers to be implemented
 function increaseZ(){
     eye[2] += T_STEP;
-    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function decreaseZ(){
     eye[2] += -T_STEP;
-    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function increaseX(){
     eye[0] += T_STEP;
-    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function decreaseX(){
     eye[0] += -T_STEP;
-    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function increaseY(){
     eye[1] += T_STEP;
-    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 function decreaseY(){
     eye[0] += T_STEP;
-    modelViewMatrix = lookAt(eye, at, up);
     draw();
 }
 
 
-
-
-//COLORS NEED TO BE RETAINED
-//COMBINE COlor with texture color in html 
