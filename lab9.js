@@ -306,7 +306,7 @@ function draw(){
         modelTransform = mult(allShapes[i].translation,modelTransform);
         //modelViewMatrix = mult(modelTransform,modelViewMatrix);
         //modelViewMatrix = mult(modelViewMatrix,allShapes[i].translation);
-        //modelViewMatrix = mult(allShapes[i].modelTransform,allShapes[i].translation);
+        modelViewMatrix = mult(allShapes[i].modelTransform,allShapes[i].translation);
         gl.uniformMatrix4fv( uniformModelView, false, flatten(modelViewMatrix) );
         drawVertexObject(allVao[i], allShapes[i].length, allShapes[i].materialAmbient, allShapes[i].materialDiffuse, allShapes[i].materialSpecular, allShapes[i].materialShininess); 
     }
