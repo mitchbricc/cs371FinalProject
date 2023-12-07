@@ -13,8 +13,17 @@ let theta  = -40* Math.PI/180.0;
 let phi    = -35* Math.PI/180.0;
 let rotation_by_5_deg = 5.0 * Math.PI/180.0;
 
+const T_STEP = 0.1;
+const R_STEP = 10.0;
+const S_STEP = 0.1;
+
+//eye variables
 let at = vec3(0.0, 0.0, 0.0);
 let up = vec3(0.0, 1.0, 0.0);
+let eyeX=0, eyeY=0, eyeZ=5;
+let eye = vec3(eyeX,eyeY,eyeZ);
+//globals for mouse effects
+let cursorHidden = false;
 
 let uniformModelView, uniformProjection;
 let modelViewMatrix, projectionMatrix;           
@@ -29,6 +38,7 @@ let lightSpecular = vec4( 0.9, 0.9, 0.9, 1.0 );
 //If w =1.0, we are specifying a finite (x,y,z) location
 //If w =0.0, light at infinity
 let lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
+let light2Position = vec4(-0.5, 0.5, 0.0, 0.0 );
 
 ///Material properties with ambient, diffuse, specular                      one for each object
 //You should declare these for each 3d shape; think of using arrays
@@ -82,7 +92,7 @@ function configureTexture( image, program ) {
 function init(){
     
 	//Get graphics context
-    let canvas = document.getElementById( "gl-canvas" );
+    canvas = document.getElementById( "gl-canvas" );
 	let  options = {  // no need for alpha channel, but note depth buffer enabling
 		alpha: false,
 		depth: true  //NOTE THIS
@@ -90,6 +100,16 @@ function init(){
 
 	gl = canvas.getContext("webgl2", options);
     if ( !gl ) { alert( "WebGL 2.0 isn't available" ); }
+
+    //to start listening for user input
+    document.addEventListener("pointerlockchange", lockChangeAlert, false);
+    canvas.addEventListener("click", async () => {
+        await canvas.requestPointerLock({
+          unadjustedMovement: true,
+        });
+      });
+      // Register the event handler to be called on key press
+    window.addEventListener("keydown",keydown,false);
 
 	//Load shaders
 	program = initShaders( gl, "vertex-shader", "fragment-shader" );
@@ -193,12 +213,8 @@ function draw(){
     
     //drawVertexObject(vao, shape.indices.length, materialAmbient, materialDiffuse, materialSpecular, materialShininess); 
     for(let i = 0;i<shapes.length;i++){
-        let eye = vec3( radius*Math.sin(theta)*Math.cos(phi), 
-                    radius*Math.sin(theta)*Math.sin(phi),
-                    radius*Math.cos(theta));
-
         let modelViewMatrix = lookAt( eye, at, up );
-        projectionMatrix = ortho( left, right, bottom, ytop, near, far );   
+        projectionMatrix = perspective( 30, gl.canvas.width/gl.canvas.height, 1, 100 );   
         gl.uniformMatrix4fv( uniformProjection, false, flatten(projectionMatrix) );
 
         modelViewMatrix = mult(modelViewMatrix,shapes[i].translation);
@@ -218,7 +234,7 @@ function drawVertexObject(vao, iLength, mA, mD, mS, s, texCoord){
     gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"),flatten(diffuseProduct) );
     gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct) );	
     gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );    
-    
+    gl.uniform4fv(gl.getUniformLocation(program, "light2Position"), flatten(light2Position) );
 
     gl.bindVertexArray(vao);
     gl.drawElements( gl.TRIANGLES, iLength, gl.UNSIGNED_SHORT, 0 );     
@@ -267,4 +283,147 @@ function setUpVertexObject(shape){
     gl.bindVertexArray(null); 
     return vao;
 }
+
+//-------------------Utility Methods-----------------------------
+//Extract the new eye coordinates from the modelview matrix. This can be done as follows:
+//Recall that [last column of modelview matrix] = [u, v, n].[-e_x, -e_y,-e_z]^T
+//So [-e_x, -e_y, -e_z]^T = [u, v, n]^-1 . [last column]
+//Use the inverse3 method in CS371utils.js and the multM3V3 utility method provided here
+function getEyePosition( mv ){
+    let u = vec3(mv[0][0],mv[0][1],mv[0][2]);       
+    let v = vec3(mv[1][0],mv[1][1],mv[1][2]); 
+    let n = vec3(mv[2][0],mv[2][1],mv[2][2]); 
+    let t = vec3(mv[0][3],mv[1][3],mv[2][3]);
+
+    let axesInv = inverse3([u,v,n]);
+    let eye = multM3V3(axesInv,t);
+    return vec3(-eye[0],-eye[1],-eye[2]);
+}
+
+//Use the new eye position to update the last column of the modelviewmatrix passed in as the first parameter
+//The last column becomes [-eye.u, -eye.v, -eye.n]
+//Use the dot(...) method in CS371utils.js
+function setEyePosition( mv, eye ){
+    let u = vec3(mv[0][0],mv[0][1],mv[0][2]);       
+    let v = vec3(mv[1][0],mv[1][1],mv[1][2]); 
+    let n = vec3(mv[2][0],mv[2][1],mv[2][2]); 
+
+    let negEye = vec3(-eye[0], -eye[1], -eye[2]);
+    mv[0][3] = dot(negEye,u);
+    mv[1][3] = dot(negEye,v);
+    mv[2][3] = dot(negEye,n);
+}
+
+//Utility method to left multiply a 3x1 vector by a 3x3 matrix
+function multM3V3( u, v ) {
+    let result = [];
+    result[0] = u[0][0]*v[0] + u[0][1]*v[1] + u[0][2]*v[2];
+    result[1] = u[1][0]*v[0] + u[1][1]*v[1] + u[1][2]*v[2];
+    result[2] = u[2][0]*v[0] + u[2][1]*v[1] + u[2][2]*v[2];
+    return result;
+}
+//end of code from Professor in lab9
+function lockChangeAlert() {
+    if (cursorHidden == false) {
+        document.getElementById("demo").innerHTML = "lock";
+        cursorHidden = true;
+        canvas.addEventListener( "mousemove", updatePosition, false);
+        document.getElementById("demo").innerHTML = "lock:"+glX+","+glY;
+    } 
+    else {
+        document.getElementById("demo").innerHTML = "unlock";
+        cursorHidden = false;
+        canvas.removeEventListener("mousemove",updatePosition,false);
+    }
+  }
+  const lookDistance = 10;
+  let APP = 30/600;
+  let eyeAngleX=180,eyeAngleY=0;
+  function calculateAt(angleX,angleY){
+    eyeAngleX += angleX;
+    eyeAngleY += angleY;
+    if(eyeAngleY>89){
+        eyeAngleY = 89;
+    }
+    if(eyeAngleY<-89){
+        eyeAngleY = -89;
+    }
+    //convert polar to xyz
+    let atx = lookDistance * Math.sin(radians(-eyeAngleX)) * Math.cos(radians(eyeAngleY));
+    let aty = lookDistance * Math.sin(radians(-eyeAngleY));
+    let atz = lookDistance * Math.cos(radians(eyeAngleX));
+    document.getElementById("demo2").innerHTML = eyeAngleY;
+    at = vec3(atx + eye[0],aty + eye[1],atz + eye[2]);
+}
+  function updatePosition(e) {
+    let angleX = e.movementX*APP;
+    let angleY = e.movementY*APP;
+    calculateAt(angleX,angleY);
+    document.getElementById("demo2").innerHTML = at;
+    modelViewMatrix = lookAt(eye, at, up);
+    draw();
+}
+
+// Keystroke handler
+function keydown(event) {
+    document.getElementById("demo").innerHTML = event.code;
+    switch (event.code) {
+        case "KeyW":
+            decreaseZ();
+            break;
+        case "KeyS":
+            increaseZ();
+            break;    
+        case "KeyA":
+            decreaseX();
+            break;  
+        case "KeyD":
+            increaseX();
+            break;  
+        case "Space":
+            jump();
+            break;
+        default:return; // Skip drawing if no effective action
+    }
+}
+function jump(){
+
+}
+let score = 4;
+function drawScore() {
+
+    document.getElementById("demo2").innerHTML = "score?";
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("score: goes here", canvas.width - 65, 20);
+  }
+
+//Button handlers to be implemented
+function increaseZ(){
+    eye[2] += T_STEP;
+    draw();
+}
+function decreaseZ(){
+    eye[2] += -T_STEP;
+    draw();
+}
+function increaseX(){
+    eye[0] += T_STEP;
+    draw();
+}
+function decreaseX(){
+    eye[0] += -T_STEP;
+    draw();
+}
+function increaseY(){
+    eye[1] += T_STEP;
+    draw();
+}
+function decreaseY(){
+    eye[0] += T_STEP;
+    draw();
+}
+
 
