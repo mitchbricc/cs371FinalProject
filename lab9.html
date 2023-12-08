@@ -15,6 +15,8 @@
         uniform mat4 u_projectionMatrix;
         uniform vec4 u_modelTransform;
 
+        uniform mat4 u_modelMatrix;
+
         uniform vec4 ambientProduct, diffuseProduct, specularProduct;
         uniform vec4 light1Position;
         uniform vec4 light2Position;
@@ -26,7 +28,7 @@
         void main() {
             //light one init
             //u_modelViewMatrix = u_modelViewMatrix + u_modelTransform;
-            vec3 pos = -(u_modelViewMatrix * a_coords).xyz;
+            vec3 pos = -(u_modelMatrix * a_coords).xyz;
             vec3 light1 = (u_modelViewMatrix * light1Position).xyz;
             vec3 L1 = normalize( light1 - pos );
             vec3 E1 = normalize( -pos );

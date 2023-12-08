@@ -26,7 +26,8 @@ let eye = vec3(eyeX,eyeY,eyeZ);
 let cursorHidden = false;
 
 let uniformModelView, uniformProjection;
-let modelViewMatrix, projectionMatrix;           
+let modelViewMatrix, projectionMatrix; 
+let modelMatrix;
 
 //Leave light properties and position unchanged
 //Ldr, Ldg, Ldb, Lsr, Lsg, Lsb, Lar, Lag, Lab
@@ -177,6 +178,7 @@ function init(){
     //set up uniform variables
     uniformModelView = gl.getUniformLocation(program, "u_modelViewMatrix");
     uniformProjection = gl.getUniformLocation(program, "u_projectionMatrix");
+    uniformModel = gl.getUniformLocation(program, "u_modelMatrix");
 
     
     //Initialize texture
@@ -235,6 +237,9 @@ function draw(){
 
         modelViewMatrix = mult(modelViewMatrix,shapes[i].translation);
         gl.uniformMatrix4fv( uniformModelView, false, flatten(modelViewMatrix) );
+
+        gl.uniformMatrix4fv( uniformModel, false, flatten(shapes[i].translation) );
+
         drawVertexObject(shapes[i].vao, shapes[i].shape.indices.length, shapes[i].materialAmbient, shapes[i].materialDiffuse, shapes[i].materialSpecular, shapes[i].materialShininess,shapes[i].shape.texCoord); 
     }
     requestAnimationFrame( draw );
