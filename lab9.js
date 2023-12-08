@@ -38,8 +38,8 @@ let lightSpecular = vec4( 0.9, 0.9, 0.9, 1.0 );
 //Position is in homogeneous coordinates
 //If w =1.0, we are specifying a finite (x,y,z) location
 //If w =0.0, light at infinity
-let lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
-let light2Position = vec4(-0.5, 0.5, 0.0, 0.0 );
+let lightPosition = vec4(10.0, 10.0, 10.0, 0.0 );
+let light2Position = vec4(-10.0, 10.0, 10.0, 0.0 );
 
 ///Material properties with ambient, diffuse, specular                      one for each object
 //You should declare these for each 3d shape; think of using arrays
@@ -130,20 +130,7 @@ function init(){
     // Retrieve the nearFar element
 	nf = document.getElementById('nearFar');
     // buttons for moving viewer and changing size
-    document.getElementById("Button1").onclick = function(){near  *= 1.02};
-    document.getElementById("Button2").onclick = function(){near *= 0.98};
-    document.getElementById("Button13").onclick = function(){far *= 1.02;};
-    document.getElementById("Button14").onclick = function(){far *= 0.98;};    
-    document.getElementById("Button3").onclick = function(){radius *= 1.1;};
-    document.getElementById("Button4").onclick = function(){radius *= 0.9;};
-    document.getElementById("Button5").onclick = function(){theta += rotation_by_5_deg;};
-    document.getElementById("Button6").onclick = function(){theta -= rotation_by_5_deg;};
-    document.getElementById("Button7").onclick = function(){phi += rotation_by_5_deg;};
-    document.getElementById("Button8").onclick = function(){phi -= rotation_by_5_deg;};
-    document.getElementById("Button9").onclick = function(){left  *= 0.9; right *= 0.9;};
-    document.getElementById("Button10").onclick = function(){left *= 1.1; right *= 1.1;};
-    document.getElementById("Button11").onclick = function(){ytop  *= 0.9; bottom *= 0.9;};
-    document.getElementById("Button12").onclick = function(){ytop *= 1.1; bottom *= 1.1;};
+    // 
  
     //set up screen
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height); 

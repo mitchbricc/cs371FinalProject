@@ -62,7 +62,75 @@ let shape = createSphereVertices(.25,50,50);
         materialSpecular: vec4( 0.4, 0.4, 0.4, 1.0 ),
         materialShininess: 400.0,
     }
+    //areana bounds
+    let floorlevel = -1;
+    let offset = 1;
+    let arenaSize = 20
+    shape = createCubeVertices(arenaSize);
+    let wall1 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(arenaSize+offset,0,0),
+        materialDiffuse:  vec4( 0.9, 0.9, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 100.0,
+    };
+    shape = createCubeVertices(arenaSize);
+    let wall2 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-arenaSize+(-offset),0,0),
+        materialDiffuse:  vec4( 0.9, 0.9, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 100.0,
+    };
+    //floor
+    shape = createCubeVertices(arenaSize);
+    let floor = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(0,-1,0),
+        materialDiffuse:  vec4( 0.9, 0.9, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 100.0,
+    };
+    shape = createCubeVertices(arenaSize);
+    let ceiling = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(0,arenaSize+offset,0),
+        materialDiffuse:  vec4( 0.9, 0.9, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 100.0,
+    };
+    shape = createCubeVertices(20);
+    let wall5 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(0,0,-arenaSize+(-offset)),
+        materialDiffuse:  vec4( 0.9, 0.9, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 100.0,
+    };
+    shape = createCubeVertices(20);
+    let wall6 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(0,0,arenaSize+offset),
+        materialDiffuse:  vec4( 0.9, 0.9, 0.2, 1.0), 
+        materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
+        materialShininess: 100.0,
+    };
+
+
     
-    shapes = [sphere,cone,cube,cylinder,Ghost];
+    //shapes = [sphere,cone,cube,cylinder,Ghost];
+    shapes = [sphere,cone,cube,cylinder,Ghost,wall1,wall2,floor,ceiling,wall5,wall6]
     return shapes;
 }
