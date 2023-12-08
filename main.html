@@ -29,12 +29,12 @@
             //light one init
             //u_modelViewMatrix = u_modelViewMatrix + u_modelTransform;
             vec3 pos = -(u_modelMatrix * a_coords).xyz;
-            vec3 light1 = (u_modelViewMatrix * light1Position).xyz;
+            vec3 light1 = (u_modelMatrix * light1Position).xyz;
             vec3 L1 = normalize( light1 - pos );
             vec3 E1 = normalize( -pos );
             vec3 H1 = normalize( L1 + E1 );
 
-            vec3 light2 = (u_modelViewMatrix * light2Position).xyz;
+            vec3 light2 = (u_modelMatrix * light2Position).xyz;
             vec3 L2 = normalize( light2 - pos );
             vec3 E2 = normalize( -pos );
             vec3 H2 = normalize( L2 + E2 );
@@ -42,8 +42,8 @@
             vec4 NN = vec4(a_normals,0);
 
             // Transform vertex normal into eye coordinates
-            vec3 N = normalize( (u_modelViewMatrix*NN).xyz);
-            //vec4 N = Tranpose(Inverse(u_modelViewMatrix));
+            vec3 N = normalize( (u_modelMatrix*NN).xyz);
+            //vec4 N = Tranpose(Inverse(u_modelMatrix));
             // Note the above line is valid in this case, but not in general for modelview matrices used to transform the normals
             // If you have an arbitrary sequence of modeling transformations that you are constantly applying to the object,
             // then the normals of that object are transformed by Tranpose(Inverse(u_modelViewMatrix)), not u_modelViewMatrix
