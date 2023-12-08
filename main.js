@@ -39,7 +39,7 @@ let lightSpecular = vec4( 0.9, 0.9, 0.9, 1.0 );
 //If w =1.0, we are specifying a finite (x,y,z) location
 //If w =0.0, light at infinity
 let lightPosition = vec4(10.0, 10.0, 10.0, 0.0 );
-let light2Position = vec4(-10.0, 10.0, 10.0, 0.0 );
+let light2Position = vec4(100.0, 10.0, 10.0, 0.0 );
 
 ///Material properties with ambient, diffuse, specular                      one for each object
 //You should declare these for each 3d shape; think of using arrays
@@ -377,4 +377,26 @@ function decreaseY(){
     eye[0] += T_STEP;
 }
 
+function collisionDetection(eye, shapes){
+    let xneg = true,xpos = true, yneg = true, ypos = true,zneg = true,zpos = true;
+    for(let i = 0;i<shapes.length;i++){
+        let xDistance = shapes[i].position[0] - eye[0];
+        let xcollision = false;
+        if(xDistance <= shapes[i].collisionDistance[0]){
+            xcollision = true;
+        }
+        let yDistance = shapes[i].position[1] - eye[1];
+        let ycollision = false;
+        if(yDistance <= shapes[i].collisionDistance[1]){
+            ycollision = true;
+        }
+        let zDistance = shapes[i].position[2] - eye[2];
+        let zcollision = false;
+        if(zDistance <= shapes[i].collisionDistance[2]){
+            zcollision = true;
+        }
+        let collision = xcollision && ycollision && zcollision;
+    }
+
+}
 
