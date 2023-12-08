@@ -153,7 +153,14 @@ function init(){
 
 function draw(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+    //moves ghost
+    let ghostPosition = vec4(shapes[4].shape.positions[0],shapes[4].shape.positions[1],shapes[4].shape.positions[2],1);
+    ghostPosition = mult(shapes[4].translation,ghostPosition);
+    let ghostx_move =  eye[0] - ghostPosition[0];
+    let ghosty_move =  eye[1] - ghostPosition[1];
+    let ghostz_move =  eye[2] - ghostPosition[2];
+    //document.getElementById("demo").innerHTML = ghostmove;
+    shapes[4].translation = mult(translate(Math.sign(ghostx_move)*T_STEP*.01,Math.sign(ghosty_move)*T_STEP*.01,Math.sign(ghostz_move)*T_STEP*.01),shapes[4].translation);
     
     
 	// Display the current near and far values
@@ -312,7 +319,6 @@ function lockChangeAlert() {
     calculateAt(angleX,angleY);
     document.getElementById("demo2").innerHTML = at;
     modelViewMatrix = lookAt(eye, at, up);
-    //draw();
 }
 
 // Keystroke handler
