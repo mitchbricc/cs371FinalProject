@@ -54,7 +54,6 @@ let nf;
 
 //global variables to help us with vertex array objects
 let program;
-let shapes;
 
 let texture;
 
@@ -163,7 +162,7 @@ function init(){
         texcoord: texcoords,
         indices: indices,
     };
-    let Ghost = {
+    let Ghost1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
         translation: mult(translate(0,.4,0),scalem(.1,.1,-0.1)),
@@ -173,7 +172,7 @@ function init(){
         materialShininess: 400.0,
     }
     
-    shapes = [sphere,cone,cube,cylinder,Ghost];
+    shapes = [sphere,cone,cube,cylinder,Ghost1];
         
     //set up uniform variables
     uniformModelView = gl.getUniformLocation(program, "u_modelViewMatrix");
