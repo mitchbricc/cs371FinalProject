@@ -124,8 +124,14 @@ function init(){
     image.src = document.getElementById("texImage").src; 
     image.onload = function() {
         configureTexture( image, program );
-        //draw(); // need this if not using requestAnimationFrame(..) in draw()
     }
+
+    // let image = new Image();
+    // image.crossOrigin = "anonymous";   // ask for CORS permission
+    // image.src = document.getElementById("texImage2").src; 
+    // image.onload = function() {
+    //     configureTexture( image, program );
+    // }
  
     // Retrieve the nearFar element
 	nf = document.getElementById('nearFar');
@@ -306,7 +312,7 @@ function lockChangeAlert() {
     calculateAt(angleX,angleY);
     document.getElementById("demo2").innerHTML = at;
     modelViewMatrix = lookAt(eye, at, up);
-    draw();
+    //draw();
 }
 
 // Keystroke handler

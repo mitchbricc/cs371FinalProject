@@ -316,3 +316,79 @@ function print(name, mv, is2D) {
     }
     console.log(str);
 }
+
+
+//Modified from webgl2fundamentals.org
+function createWallVertices(size) {
+    size = size || 1;
+    let k = size / 2;
+
+    let CUBE_FACE_INDICES= [
+      [3, 7, 5, 1], // right
+      [6, 2, 0, 4], // left
+      [6, 7, 3, 2], // ??
+      [0, 1, 5, 4], // ??
+      [7, 6, 4, 5], // front
+      [2, 3, 1, 0]  // back
+    ];
+
+    let cornerVertices = [
+        [-k, -k, -.01],
+        [+k, -k, -.01],
+        [-k, +k, -.01],
+        [+k, +k, -.01],
+        [-k, -k, +.01],
+        [+k, -k, +.01],
+        [-k, +k, +.01],
+        [+k, +k, +.01],
+    ];
+
+    let faceNormals = [
+        [+1, +0, +0],
+        [-1, +0, +0],
+        [+0, +1, +0],
+        [+0, -1, +0],
+        [+0, +0, +1],
+        [+0, +0, -1],
+    ];
+
+    let uvCoords = [
+        [1, 0],
+        [0, 0],
+        [0, 1],
+        [1, 1],
+    ];
+
+    let numVertices = 6 * 4;
+    let positions = [];
+    let normals   = [];
+    let texcoords = [];
+    let indices   = [];
+
+    for (let f = 0; f < 6; ++f) {
+        let faceIndices = CUBE_FACE_INDICES[f];
+        for (let v = 0; v < 4; ++v) {
+            let position=vec3(cornerVertices[faceIndices[v]] );
+            let normal = faceNormals[f];
+            let uv = uvCoords[v];
+
+            // Each face needs all four vertices because the normals and texture
+            // coordinates are not all the same.
+            positions.push(position);
+            normals.push(normal);
+            texcoords.push(uv);
+
+        }
+        // Two triangles make a square face.
+        let offset = 4 * f;
+        indices.push(offset + 0, offset + 1, offset + 2);
+        indices.push(offset + 0, offset + 2, offset + 3);
+    }
+
+    return {
+        positions: positions,
+        normals: normals,
+        texcoord: texcoords,
+        indices: indices,
+    };
+}
