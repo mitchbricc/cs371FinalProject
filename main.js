@@ -103,7 +103,12 @@ function configureTexture( image, program, texture, index) {
 }
 
 function init() {
+<<<<<<< HEAD
     //window.onload = playBackgroundMusic();
+=======
+    showLives();
+    window.onload = playBackgroundMusic();
+>>>>>>> 232d52a146eb1eb0652583a29074644aa3eb4541
     //Get graphics context
     canvas = document.getElementById("gl-canvas");
     let options = {  // no need for alpha channel, but note depth buffer enabling
@@ -185,7 +190,7 @@ function init() {
 function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     let movements = collisionDetection(eye, shapes); //movements tracks the directions that the player can move
-    document.getElementById("demo").innerHTML = movements;
+    //document.getElementById("demo").innerHTML = movements;
 
     //moves ghost
     let ghostPosition = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
@@ -292,54 +297,12 @@ function setUpVertexObject(shape) {
     return vao;
 }
 
-//-------------------Utility Methods-----------------------------
-//Extract the new eye coordinates from the modelview matrix. This can be done as follows:
-//Recall that [last column of modelview matrix] = [u, v, n].[-e_x, -e_y,-e_z]^T
-//So [-e_x, -e_y, -e_z]^T = [u, v, n]^-1 . [last column]
-//Use the inverse3 method in CS371utils.js and the multM3V3 utility method provided here
-function getEyePosition(mv) {
-    let u = vec3(mv[0][0], mv[0][1], mv[0][2]);
-    let v = vec3(mv[1][0], mv[1][1], mv[1][2]);
-    let n = vec3(mv[2][0], mv[2][1], mv[2][2]);
-    let t = vec3(mv[0][3], mv[1][3], mv[2][3]);
-
-    let axesInv = inverse3([u, v, n]);
-    let eye = multM3V3(axesInv, t);
-    return vec3(-eye[0], -eye[1], -eye[2]);
-}
-
-//Use the new eye position to update the last column of the modelviewmatrix passed in as the first parameter
-//The last column becomes [-eye.u, -eye.v, -eye.n]
-//Use the dot(...) method in CS371utils.js
-function setEyePosition(mv, eye) {
-    let u = vec3(mv[0][0], mv[0][1], mv[0][2]);
-    let v = vec3(mv[1][0], mv[1][1], mv[1][2]);
-    let n = vec3(mv[2][0], mv[2][1], mv[2][2]);
-
-    let negEye = vec3(-eye[0], -eye[1], -eye[2]);
-    mv[0][3] = dot(negEye, u);
-    mv[1][3] = dot(negEye, v);
-    mv[2][3] = dot(negEye, n);
-}
-
-//Utility method to left multiply a 3x1 vector by a 3x3 matrix
-function multM3V3(u, v) {
-    let result = [];
-    result[0] = u[0][0] * v[0] + u[0][1] * v[1] + u[0][2] * v[2];
-    result[1] = u[1][0] * v[0] + u[1][1] * v[1] + u[1][2] * v[2];
-    result[2] = u[2][0] * v[0] + u[2][1] * v[1] + u[2][2] * v[2];
-    return result;
-}
-//end of code from Professor in lab9
 function lockChangeAlert() {
     if (cursorHidden == false) {
-        document.getElementById("demo").innerHTML = "lock";
         cursorHidden = true;
         canvas.addEventListener("mousemove", updatePosition, false);
-        document.getElementById("demo").innerHTML = "lock:" + glX + "," + glY;
     }
     else {
-        document.getElementById("demo").innerHTML = "unlock";
         cursorHidden = false;
         canvas.removeEventListener("mousemove", updatePosition, false);
     }
@@ -426,78 +389,76 @@ function increaseY() {
 function decreaseY() {
     eye[0] += T_STEP;
 }
-
-function collisionDetection(eye, shapes) {
-    let xneg = true, xpos = true, yneg = true, ypos = true, zneg = true, zpos = true;
-
-    for (let i = 0; i < shapes.length; i++) {
-        let position = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
+function ghostCollision(){
+    let position = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
         position = mult(shapes[4].translation, position);
         let xDistance = Math.abs(eye[0] - position[0]);
         let yDistance = Math.abs(eye[1] - position[1]);
         let zDistance = Math.abs(eye[2] - position[2]);
-        // if(i == 4){
-        //     document.getElementById("demo2").innerHTML = zDistance;
-        // }
 
         let xcollision = false;
-        if (xDistance <= shapes[i].collisionDistance[0]) {
+        if (xDistance <= shapes[4].collisionDistance[0]) {
             xcollision = true;
         }
-        //let yDistance = shapes[i].position[1] - eye[1];
         let ycollision = false;
-        if (yDistance <= shapes[i].collisionDistance[1]) {
+        if (yDistance <= shapes[4].collisionDistance[1]) {
             ycollision = true;
         }
-        //let zDistance = shapes[i].position[2] - eye[2];
         let zcollision = false;
-        if (zDistance <= shapes[i].collisionDistance[2]) {
+        if (zDistance <= shapes[4].collisionDistance[2]) {
             zcollision = true;
         }
         let collision = xcollision && ycollision && zcollision;
         if (collision) {
-
-            if (i == 4) {//if ghost collides with player
-                document.getElementById("demo").innerHTML = "collision";
                 let ghostPosition = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
                 ghostPosition = mult(shapes[4].translation, ghostPosition);
                 let ghostx_move = eye[0] - ghostPosition[0];
                 let ghosty_move = eye[1] - ghostPosition[1];
                 let ghostz_move = eye[2] - ghostPosition[2];
-                //lives--;  
-                document.getElementById("demo").innerHTML = Math.abs(ghostx_move) - shapes[4].collisionDistance[0];
                 if (Math.abs(ghostx_move) > 0.001) {
                     if (Math.sign(eye[0] - position[0]) == -1) {
-                        xpos = false;
                         eye[0] -= T_STEP * 5;
                     }
                     else {
-                        xneg = false;
                         eye[0] += T_STEP * 5;
                     }
                 }
-                // if(Math.sign(eye[1] - position[1]) == -1){
-                //     ypospos = false;
-                //     eye[1] -= T_STEP*5;
-                // }
-                // else{
-                //     yneg = false;
-                //     eye[1] += T_STEP*5;
-                // }
-                // if(Math.sign(eye[2] - position[2]) == -1){
-                //     zpos = false;
-                //     eye[2] -= T_STEP*5;
-                // }
-                // else{
-                //     zneg = false;
-                //     eye[2] += T_STEP*5;
-                // }
-            }
+                if (Math.abs(ghosty_move) > 0.001) {
+                    if(Math.sign(eye[1] - position[1]) == -1){
+                        eye[1] -= T_STEP*5;
+                    }
+                    else{
+                        eye[1] += T_STEP*5;
+                    }
+                }
+                if (Math.abs(ghostz_move) > 0.001) {
+                    if(Math.sign(eye[2] - position[2]) == -1){
+                        eye[2] -= T_STEP*5;
+                    }
+                    else{
+                        eye[2] += T_STEP*5;
+                    }
+                }
         }
+        return collision;
     }
+
+function collisionDetection(eye, shapes) {
+    let xneg = true, xpos = true, yneg = true, ypos = true, zneg = true, zpos = true;
+    if(ghostCollision()){
+        lives--;
+        showLives();
+    }
+    
+    for (let i = 0; i < shapes.length; i++) {
+        
+        }
     return [xneg, xpos, yneg, ypos, zneg, zpos];
 }
-
+let lives = 3;
+function showLives(){
+    document.getElementById("demo").innerText = "lives: "+lives;
+}
 function showScore(orbsCollected) {
     document.getElementById("ScoreDisplay").innerHTML = orbsCollected;
 }

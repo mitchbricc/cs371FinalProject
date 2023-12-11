@@ -122,8 +122,6 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(0, 0, 0),
-
     };
     let orb2 = {
         shape: shape,
@@ -133,13 +131,16 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(0, 0, 0),
-
     };
 
 
 
 
+<<<<<<< HEAD
     shapes = [sphere, cone, cube, cylinder, Ghost, arena, orb1,Rock];
+=======
+    shapes = [sphere, cone, cube, cylinder, Ghost,ceiling, arena, orb1];
+    //shapes = [sphere,cone,cube,cylinder,Ghost,wall1,wall2,floor,ceiling,wall5,wall6,wallTest];
+>>>>>>> 232d52a146eb1eb0652583a29074644aa3eb4541
     return shapes;
 }
