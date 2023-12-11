@@ -18,9 +18,9 @@ const R_STEP = 10.0;
 const S_STEP = 0.1;
 
 //eye variables
-let at = vec3(0.0, 0.0, 0.0);
+let at = vec3(0.0, -19, 0.0);
 let up = vec3(0.0, 1.0, 0.0);
-let eyeX=0, eyeY=0, eyeZ=5;
+let eyeX=0, eyeY=-19, eyeZ=5;
 let eye = vec3(eyeX,eyeY,eyeZ);
 //globals for mouse effects
 let cursorHidden = false;
@@ -153,7 +153,7 @@ function init(){
 
 function draw(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    let movements = collisionDetection(eye,shapes); //movements tracks the directions that the player can move
+    //let movements = collisionDetection(eye,shapes); //movements tracks the directions that the player can move
     //document.getElementById("demo").innerHTML = movements;
     //moves ghost
     let ghostPosition = vec4(shapes[4].shape.positions[0],shapes[4].shape.positions[1],shapes[4].shape.positions[2],1);
