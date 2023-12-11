@@ -337,16 +337,6 @@ function keydown(event) {
 function jump() {
 
 }
-let score = 4;
-function drawScore() {
-
-    document.getElementById("demo2").innerHTML = "score?";
-    var ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "#0095DD";
-    ctx.fillText("score: goes here", canvas.width - 65, 20);
-}
 
 //Button handlers to be implemented
 function increaseZ() {
@@ -429,18 +419,53 @@ function collisionDetection(eye, shapes) {
     }
     
     for (let i = 0; i < shapes.length; i++) {
-        
+        if(i==4){
+            i++;//skip ghost
         }
+        let position = vec4(shapes[i].shape.positions[0][0], shapes[i].shape.positions[0][1], shapes[i].shape.positions[0][2], 1);
+        position = mult(shapes[i].translation, position);
+        let xDistance = Math.abs(eye[0] - position[0]);
+        let yDistance = Math.abs(eye[1] - position[1]);
+        let zDistance = Math.abs(eye[2] - position[2]);
+        if(i == shapes.length-1){
+            //document.getElementById("demo2").innerHTML = xDistance;
+        }
+        let xcollision = false;
+        if (xDistance <= shapes[i].collisionDistance[0]) {
+            xcollision = true;
+            
+        }
+        let ycollision = false;
+        if (yDistance <= shapes[i].collisionDistance[1]) {
+            ycollision = true;
+            
+        }
+        let zcollision = false;
+        if (zDistance <= shapes[i].collisionDistance[2]) {
+            zcollision = true;
+        }
+        let collision = xcollision && ycollision && zcollision;
+        if (collision) {
+            switch(i) {
+                case 7:
+                  orbCollision();
+                  break;
+                default:
+                  
+              }
+        }
+    }
     return [xneg, xpos, yneg, ypos, zneg, zpos];
 }
 let lives = 3;
 function showLives(){
     document.getElementById("demo").innerText = "lives: "+lives;
 }
-function showScore(orbsCollected) {
-    document.getElementById("ScoreDisplay").innerHTML = orbsCollected;
+let score = 0;
+function showScore() {
+    document.getElementById("ScoreDisplay").innerHTML = score;
 }
-
 function orbCollision() {
-    4
+    score++;
+    showScore();
 }
