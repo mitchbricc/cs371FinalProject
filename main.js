@@ -103,12 +103,8 @@ function configureTexture( image, program, texture, index) {
 }
 
 function init() {
-<<<<<<< HEAD
-    //window.onload = playBackgroundMusic();
-=======
     showLives();
     window.onload = playBackgroundMusic();
->>>>>>> 232d52a146eb1eb0652583a29074644aa3eb4541
     //Get graphics context
     canvas = document.getElementById("gl-canvas");
     let options = {  // no need for alpha channel, but note depth buffer enabling

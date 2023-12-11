@@ -136,11 +136,7 @@ function getShapes() {
 
 
 
-<<<<<<< HEAD
-    shapes = [sphere, cone, cube, cylinder, Ghost, arena, orb1,Rock];
-=======
     shapes = [sphere, cone, cube, cylinder, Ghost,ceiling, arena, orb1];
     //shapes = [sphere,cone,cube,cylinder,Ghost,wall1,wall2,floor,ceiling,wall5,wall6,wallTest];
->>>>>>> 232d52a146eb1eb0652583a29074644aa3eb4541
     return shapes;
 }
