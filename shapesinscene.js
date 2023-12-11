@@ -68,6 +68,28 @@ function getShapes() {
         materialShininess: 30.0,
         collisionDistance: vec3(1.2, 1.2, 1.05),
     }
+    //rock 
+    coords = rock.vertices[0].values;
+    indices = rock.connectivity[0].indices;
+    cnormals = rock.vertices[1].values;
+    texcoords = 0;
+    shape = {
+        positions: coords,
+        normals: normals,
+        texcoord: texcoords,
+        indices: indices,
+    };
+    let Rock = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(-3, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.471, 0.471, 0.471),
+        materialAmbient: vec4(0.314, 0.314, 0.314),
+        materialSpecular: vec4(0.784, 0.784, 0.784),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    
     shape = createCubeVertices(40);
     let arena = {
         shape: shape,
