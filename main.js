@@ -103,7 +103,7 @@ function configureTexture( image, program, texture, index) {
 }
 
 function init() {
-    window.onload = playBackgroundMusic();
+    //window.onload = playBackgroundMusic();
     //Get graphics context
     canvas = document.getElementById("gl-canvas");
     let options = {  // no need for alpha channel, but note depth buffer enabling
@@ -139,20 +139,29 @@ function init() {
 
 
     //Initialize texture
+    //brick
     let image = new Image();
     image.crossOrigin = "anonymous";   // ask for CORS permission
-    image.src = document.getElementById("texImage").src; 
+    image.src = document.getElementById("texImage0").src; 
     image.onload = function() {
         textures.push(gl.createTexture());
         configureTexture( image, program,textures[textures.length-1],textures.length-1);
     }
-
+    //stars
     let image1 = new Image();
     image1.crossOrigin = "anonymous";   // ask for CORS permission
-    image1.src = document.getElementById("texImage2").src; 
+    image1.src = document.getElementById("texImage1").src; 
     image1.onload = function() {
         textures.push(gl.createTexture());
         configureTexture( image1, program,textures[textures.length-1],textures.length-1 );
+    }
+    //rock
+    let image2 = new Image();
+    image2.crossOrigin = "anonymous";   // ask for CORS permission
+    image2.src = document.getElementById("texImage2").src; 
+    image2.onload = function() {
+        textures.push(gl.createTexture());
+        configureTexture( image2, program,textures[textures.length-1],textures.length-1 );
     }
  
     // Retrieve the nearFar element
@@ -202,11 +211,20 @@ function draw() {
 
         gl.uniformMatrix4fv(uniformModel, false, flatten(shapes[i].translation));
 
-        if(i == 5){
+        //shapes
+        if(i < 3){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
         }
+        //arena
+        else if(i == 5){
+            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
+        }
+        //rocks
+        else if(i == 7){
+            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 2);
+        }
         else{
-            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 1);
+            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
         }
 
         drawVertexObject(shapes[i].vao, shapes[i].shape.indices.length, shapes[i].materialAmbient, shapes[i].materialDiffuse, shapes[i].materialSpecular, shapes[i].materialShininess, shapes[i].shape.texCoord);
