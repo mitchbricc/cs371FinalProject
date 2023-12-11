@@ -10,6 +10,7 @@ let shape = createSphereVertices(.25,50,50);
         materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialShininess: 400.0,
+        collisionDistance: vec3(.05,.05,.05),
     };
     shape = createTruncatedConeVertices(.2,0,1,50,50);
     let cone = {
@@ -20,6 +21,7 @@ let shape = createSphereVertices(.25,50,50);
         materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialShininess: 100.0,
+        collisionDistance: vec3(.05,.05,.05),
     };
     shape = createCubeVertices(.4);
     let cube = {
@@ -30,6 +32,7 @@ let shape = createSphereVertices(.25,50,50);
         materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialShininess: 100.0,
+        collisionDistance: vec3(.05,.05,.05),
     };
     shape = createTruncatedConeVertices(.125,.125,.75,50,50);
     let cylinder = {
@@ -40,6 +43,7 @@ let shape = createSphereVertices(.25,50,50);
         materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialSpecular: vec4( 0.4, 0.4, 0.4, 1.0 ),
         materialShininess: 400.0,
+        collisionDistance: vec3(.05,.05,.05),
     };
     //You will not use a mesh but parametric shapes                         for ghost
     let coords = ghost.vertices[0].values;
@@ -61,6 +65,7 @@ let shape = createSphereVertices(.25,50,50);
         materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialSpecular: vec4( 0.4, 0.4, 0.4, 1.0 ),
         materialShininess: 400.0,
+        collisionDistance: vec3(1.2,1.2,1.05),
     }
     //areana bounds
     // let offset = 1;
@@ -152,6 +157,7 @@ let shape = createSphereVertices(.25,50,50);
         materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialShininess: 100.0,
+        collisionDistance: vec3(0,0,0),
     };
 
     shape = createWallVertices(39);
@@ -163,6 +169,7 @@ let shape = createSphereVertices(.25,50,50);
         materialAmbient:  vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialSpecular: vec4( 1.0, 1.0, 1.0, 1.0 ),
         materialShininess: 100.0,
+        collisionDistance: vec3(0,0,0),
     };
 
 

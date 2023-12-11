@@ -153,13 +153,15 @@ function init(){
 
 function draw(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    let movements = collisionDetection(eye,shapes); //movements tracks the directions that the player can move
+    //document.getElementById("demo").innerHTML = movements;
     //moves ghost
     let ghostPosition = vec4(shapes[4].shape.positions[0],shapes[4].shape.positions[1],shapes[4].shape.positions[2],1);
     ghostPosition = mult(shapes[4].translation,ghostPosition);
     let ghostx_move =  eye[0] - ghostPosition[0];
     let ghosty_move =  eye[1] - ghostPosition[1];
     let ghostz_move =  eye[2] - ghostPosition[2];
-    //document.getElementById("demo").innerHTML = ghostmove;
+    
     shapes[4].translation = mult(translate(Math.sign(ghostx_move)*T_STEP*.01,Math.sign(ghosty_move)*T_STEP*.01,Math.sign(ghostz_move)*T_STEP*.01),shapes[4].translation);
     
     
@@ -379,24 +381,72 @@ function decreaseY(){
 
 function collisionDetection(eye, shapes){
     let xneg = true,xpos = true, yneg = true, ypos = true,zneg = true,zpos = true;
+    
     for(let i = 0;i<shapes.length;i++){
-        let xDistance = shapes[i].position[0] - eye[0];
+        let position = vec4(shapes[4].shape.positions[0],shapes[4].shape.positions[1],shapes[4].shape.positions[2],1);
+        position = mult(shapes[4].translation,position);
+        let xDistance =  Math.abs(eye[0] - position[0]);
+        let yDistance =  Math.abs(eye[1] - position[1]);
+        let zDistance =  Math.abs(eye[2] - position[2]);
+        // if(i == 4){
+        //     document.getElementById("demo2").innerHTML = zDistance;
+        // }
+        
         let xcollision = false;
         if(xDistance <= shapes[i].collisionDistance[0]){
             xcollision = true;
         }
-        let yDistance = shapes[i].position[1] - eye[1];
+        //let yDistance = shapes[i].position[1] - eye[1];
         let ycollision = false;
         if(yDistance <= shapes[i].collisionDistance[1]){
             ycollision = true;
         }
-        let zDistance = shapes[i].position[2] - eye[2];
+        //let zDistance = shapes[i].position[2] - eye[2];
         let zcollision = false;
         if(zDistance <= shapes[i].collisionDistance[2]){
             zcollision = true;
         }
         let collision = xcollision && ycollision && zcollision;
+        if(collision){
+            
+            if(i == 4){//if ghost collides with player
+                document.getElementById("demo").innerHTML = "collision";
+                let ghostPosition = vec4(shapes[4].shape.positions[0],shapes[4].shape.positions[1],shapes[4].shape.positions[2],1);
+                ghostPosition = mult(shapes[4].translation,ghostPosition);
+                let ghostx_move =  eye[0] - ghostPosition[0];
+                let ghosty_move =  eye[1] - ghostPosition[1];
+                let ghostz_move =  eye[2] - ghostPosition[2];
+                //lives--;  
+                document.getElementById("demo").innerHTML = Math.abs(ghostx_move) - shapes[4].collisionDistance[0];   
+                if(Math.abs(ghostx_move) > 0.001){
+                    if(Math.sign(eye[0] - position[0]) == -1){
+                        xpos = false;
+                        eye[0] -= T_STEP*5;
+                    }
+                    else{
+                        xneg = false;
+                        eye[0] += T_STEP*5;
+                    }
+                }
+                    // if(Math.sign(eye[1] - position[1]) == -1){
+                    //     ypospos = false;
+                    //     eye[1] -= T_STEP*5;
+                    // }
+                    // else{
+                    //     yneg = false;
+                    //     eye[1] += T_STEP*5;
+                    // }
+                    // if(Math.sign(eye[2] - position[2]) == -1){
+                    //     zpos = false;
+                    //     eye[2] -= T_STEP*5;
+                    // }
+                    // else{
+                    //     zneg = false;
+                    //     eye[2] += T_STEP*5;
+                    // }
+        }
+        }
     }
-
+    return [xneg,xpos,yneg,ypos,zneg,zpos];
 }
 
