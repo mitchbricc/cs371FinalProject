@@ -59,9 +59,25 @@ let program;
 
 let textures = [];
 
+function playBackgroundMusic() {
+    // Initialize Web Audio API
+    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Get the audio element
+    var audioElement = document.getElementById('backgroundMusic');
+
+    // Create an audio source from the audio element
+    var audioSource = audioContext.createMediaElementSource(audioElement);
+
+    // Connect the audio source to the audio context
+    audioSource.connect(audioContext.destination);
+
+    // Start playing the audio
+    audioElement.play();
+}
+
 function configureTexture( image, program, texture, index) {
     gl.activeTexture( gl.TEXTURE0 + index );  //0 active by default
-    document.getElementById("demo").innerHTML = gl.TEXTURE0 + index;
     gl.bindTexture(gl.TEXTURE_2D, texture);
 
     //Flip the Y values to match the WebGL coordinates
@@ -87,7 +103,7 @@ function configureTexture( image, program, texture, index) {
 }
 
 function init() {
-    //window.onload = playBackgroundMusic();
+    window.onload = playBackgroundMusic();
     //Get graphics context
     canvas = document.getElementById("gl-canvas");
     let options = {  // no need for alpha channel, but note depth buffer enabling
@@ -159,8 +175,8 @@ function init() {
 
 function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    //let movements = collisionDetection(eye, shapes); //movements tracks the directions that the player can move
-    //document.getElementById("demo").innerHTML = movements;
+    let movements = collisionDetection(eye, shapes); //movements tracks the directions that the player can move
+    document.getElementById("demo").innerHTML = movements;
 
     //moves ghost
     let ghostPosition = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
@@ -184,7 +200,7 @@ function draw() {
         modelViewMatrix = mult(modelViewMatrix, shapes[i].translation);
         gl.uniformMatrix4fv(uniformModelView, false, flatten(modelViewMatrix));
 
-        gl.uniformMatrix4fv( uniformModel, false, flatten(shapes[i].translation) );
+        gl.uniformMatrix4fv(uniformModel, false, flatten(shapes[i].translation));
 
         if(i == 5){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);

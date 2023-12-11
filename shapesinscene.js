@@ -100,6 +100,8 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
+        collisionDistance: vec3(0, 0, 0),
+
     };
     let orb2 = {
         shape: shape,
@@ -109,6 +111,8 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
+        collisionDistance: vec3(0, 0, 0),
+
     };
 
 

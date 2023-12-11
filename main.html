@@ -104,11 +104,20 @@
     <script type="text/javascript" src="models\ghost.js"></script>
 	<script type="text/javascript" src="main.js"></script>
     <script type="text/javascript" src="shapesinscene.js"></script>
+    <script type="text/javascript" src="test.js"></script>
+
+    
     
     
 </head>
 
+
+
 <body onload="init();">
+    <audio id="backgroundMusic" controls="false" loop="true" preload="auto" style="display:none">
+        <source src="sounds\Hitman(chosic.com).mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 	<h2>Cube</h2>
     <p id="demo"></p>
     <p id="demo2"></p>
@@ -117,10 +126,17 @@
 	</canvas>
     <div>
             <p>In case you don't see the entire object, you may have to play with the Near, Far, and R settings to get the appropriate view volume </p> 
-            <p id="nearFar">The near and far values are displayed here.</p>            
+            <p id="nearFar">The near and far values are displayed here.</p>     
+            <p>Score</p>
+            <p id = ScoreDisplay></p>       
+            
+            
 	</div>
     <img id = "texImage" src = "textures\brick-texture.jpg"hidden></img>
     <img id = "texImage2" src = "textures\stars.jpg"hidden></img>
+    
 
 </body>
 </html>
+
+
