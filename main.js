@@ -145,24 +145,24 @@ function init() {
     image.crossOrigin = "anonymous";   // ask for CORS permission
     image.src = document.getElementById("texImage0").src; 
     image.onload = function() {
-        textures.push(gl.createTexture());
-        configureTexture( image, program,textures[textures.length-1],textures.length-1);
+        textures[0] = gl.createTexture();
+        configureTexture( image, program,textures[0],0);
     }
     //stars
     let image1 = new Image();
     image1.crossOrigin = "anonymous";   // ask for CORS permission
     image1.src = document.getElementById("texImage1").src; 
     image1.onload = function() {
-        textures.push(gl.createTexture());
-        configureTexture( image1, program,textures[textures.length-1],textures.length-1 );
+        textures[1] = gl.createTexture();
+        configureTexture( image1, program,textures[1],1 );
     }
     //rock
     let image2 = new Image();
     image2.crossOrigin = "anonymous";   // ask for CORS permission
     image2.src = document.getElementById("texImage2").src; 
     image2.onload = function() {
-        textures.push(gl.createTexture());
-        configureTexture( image2, program,textures[textures.length-1],textures.length-1 );
+        textures[2] = gl.createTexture();
+        configureTexture( image2, program,textures[2],2 );
     }
  
     // Retrieve the nearFar element
