@@ -164,6 +164,14 @@ function init() {
         textures[2] = gl.createTexture();
         configureTexture( image2, program,textures[2],2 );
     }
+    //orb
+    let image3 = new Image();
+    image3.crossOrigin = "anonymous";   // ask for CORS permission
+    image3.src = document.getElementById("texImage3").src; 
+    image3.onload = function() {
+        textures[3] = gl.createTexture();
+        configureTexture( image3, program,textures[3],3 );
+    }
  
     // Retrieve the nearFar element
     nf = document.getElementById('nearFar');
@@ -213,24 +221,25 @@ function draw() {
         gl.uniformMatrix4fv(uniformModel, false, flatten(shapes[i].translation));
 
         //shapes
-        if(i < 3){
-            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
-        }
-        //arena
-        else if(i == 5){
+        if(i == 0){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
         }
         //ceiling
-        else if(i == 6){
+        if(i == 1){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 1);
         }
-        //rocks
-        else if(i == 7){
-            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 2);
+        //orbs 1 and 2
+        else if(i == 2 || i==3){
+            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 3);
         }
-        else{
+        //ceiling
+        else if(i > 4 && i < 10){
+            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 3);
+        }
+        else if(i > 9){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
         }
+        
 
         drawVertexObject(shapes[i].vao, shapes[i].shape.indices.length, shapes[i].materialAmbient, shapes[i].materialDiffuse, shapes[i].materialSpecular, shapes[i].materialShininess, shapes[i].shape.texCoord);
     }
