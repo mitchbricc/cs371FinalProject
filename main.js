@@ -39,7 +39,7 @@ let lightSpecular = vec4(0.9, 0.9, 0.9, 1.0);
 //If w =1.0, we are specifying a finite (x,y,z) location
 //If w =0.0, light at infinity
 let lightPosition = vec4(10.0, 10.0, 10.0, 0.0);
-let light2Position = vec4(100.0, 10.0, 10.0, 0.0);
+let light2Position = vec4(10.0, 10.0, -10.0, 0.0);
 
 ///Material properties with ambient, diffuse, specular                      one for each object
 //You should declare these for each 3d shape; think of using arrays
@@ -219,6 +219,10 @@ function draw() {
         //arena
         else if(i == 5){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
+        }
+        //ceiling
+        else if(i == 6){
+            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 1);
         }
         //rocks
         else if(i == 7){

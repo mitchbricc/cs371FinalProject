@@ -83,7 +83,7 @@ function getShapes() {
         shape: shape,
         vao: setUpVertexObject(shape),
         translation: mult(translate(-3, .4+flooroffset, 0), scalem(.01, .01, .01)),
-        materialDiffuse: vec4(0.471, 0.471, 0.471),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.314, 0.314, 0.314),
         materialSpecular: vec4(0.784, 0.784, 0.784),
         materialShininess: 10.0,
@@ -138,7 +138,7 @@ function getShapes() {
 
 
 
-    shapes = [sphere, cone, cube, cylinder, Ghost,ceiling, arena, orb1];
+    shapes = [sphere, cone, cube, cylinder, Ghost,arena,ceiling, Rock, orb1];
     //shapes = [sphere,cone,cube,cylinder,Ghost,wall1,wall2,floor,ceiling,wall5,wall6,wallTest];
     return shapes;
 }
