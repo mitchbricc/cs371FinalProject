@@ -489,6 +489,7 @@ function collisionDetection(eye, shapes) {
                 let move = shapes[i].translation
                 move = mult(translate(1000,1000,1000),move)
                 shapes[i].translation = move;
+                orbCollision();
             }
         }
     }
@@ -526,7 +527,4 @@ function gravity(){
 }
 function jump() {
     eye[1] += 20*T_STEP;
-}
-function removeOrb(index){
-
 }
