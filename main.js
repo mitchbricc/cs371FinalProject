@@ -443,7 +443,6 @@ function ghostCollision(){
 function collisionDetection(eye, shapes) {
     let xneg = true, xpos = true, yneg = true, ypos = true, zneg = true, zpos = true;
     
-    
     for (let i = 0; i < shapes.length; i++) {
         if(i==4){
             if(ghostCollision()){
@@ -452,6 +451,7 @@ function collisionDetection(eye, shapes) {
             }
             i++;//skip ghost
         }
+        //first vertex of the shape 
         let position = vec4(shapes[i].shape.positions[0][0], shapes[i].shape.positions[0][1], shapes[i].shape.positions[0][2], 1);
         position = mult(shapes[i].translation, position);
         let xDistance = Math.abs(eye[0] - position[0]);
@@ -473,13 +473,16 @@ function collisionDetection(eye, shapes) {
         }
         let collision = xcollision && ycollision && zcollision;
         if (collision) {
-            switch(i) {
-                case 7:
-                  orbCollision();
-                  break;
-                default:
-                  
-              }
+            
+            
+            
+            //orb collecting
+            if(((i > 1)&&(i < 4))||((i > 4)&&(i < 10))){
+                console.log("ORB COLLISION of orb index:"+i);
+                let move = shapes[i].translation
+                move = mult(translate(1000,1000,1000),move)
+                shapes[i].translation = move;
+            }
         }
     }
     arenaBorders()
@@ -516,4 +519,7 @@ function gravity(){
 }
 function jump() {
     eye[1] += 20*T_STEP;
+}
+function removeOrb(index){
+
 }

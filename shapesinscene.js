@@ -197,34 +197,14 @@ function getShapes() {
     let orb2 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(-6, flooroffset, 0),
-        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 400.0,
-        collisionDistance: vec3(0, 0, 0),
-    };
-    let orb3 = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
         translation: translate(-7, flooroffset, 0),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(0, 0, 0),
+        collisionDistance: vec3(1.3, 19.3, 1.3),
     };
-    let orb4 = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(-8, flooroffset, 0),
-        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 400.0,
-        collisionDistance: vec3(0, 0, 0),
-    };
-    let orb5 = {
+    let orb3 = {
         shape: shape,
         vao: setUpVertexObject(shape),
         translation: translate(-9, flooroffset, 0),
@@ -234,17 +214,7 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: vec3(1.3, 19.3, 1.3),
     };
-    let orb6 = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(-10, flooroffset, 0),
-        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 400.0,
-        collisionDistance: vec3(0, 0, 0),
-    };
-    let orb7 = {
+    let orb4 = {
         shape: shape,
         vao: setUpVertexObject(shape),
         translation: translate(-11, flooroffset, 0),
@@ -252,7 +222,37 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(0, 0, 0),
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let orb5 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-13, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let orb6 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-15, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let orb7 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-17, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
     };
     shape = createPlatformVertices(2);
     let Platform1 = {
@@ -263,7 +263,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(0, 0, 0),
+        collisionDistance: vec3(1.3, 19.3, 1.3),
     };
 
 

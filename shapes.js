@@ -408,14 +408,14 @@ function createPlatformVertices(size) {
     ];
 
     let cornerVertices = [
-        [-k, -k, -1],
-        [+k, -k, -1],
-        [-k, +k, -1],
-        [+k, +k, -1],
-        [-k, -k, +1],
-        [+k, -k, +1],
-        [-k, +k, +1],
-        [+k, +k, +1],
+        [-k, -k, -.5],
+        [+k, -k, -.5],
+        [-k, +k, -.5],
+        [+k, +k, -.5],
+        [-k, -k, +.5],
+        [+k, -k, +.5],
+        [-k, +k, +.5],
+        [+k, +k, +.5],
     ];
 
     let faceNormals = [
