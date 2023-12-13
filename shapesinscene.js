@@ -79,13 +79,83 @@ function getShapes() {
         texcoord: texcoords,
         indices: indices,
     };
-    let Rock = {
+    let Rock1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(-3, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(3, .4+flooroffset, 0), scalem(.01, .01, .01)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
-        materialAmbient: vec4(0.314, 0.314, 0.314),
-        materialSpecular: vec4(0.784, 0.784, 0.784),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    let Rock2 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(4, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    let Rock3 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(5, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    let Rock4 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(6, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    let Rock5 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(7, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    let Rock6 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(8, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    let Rock7 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(9, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
+        materialShininess: 10.0,
+        collisionDistance: vec3(1.2, 1.2, 1.05),
+    }
+    let Rock8 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(10, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        materialDiffuse: vec4(0.1, 0.1, 0.1),
+        materialAmbient: vec4(0.1, 0.1, 0.1),
+        materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
         collisionDistance: vec3(1.2, 1.2, 1.05),
     }
@@ -127,7 +197,57 @@ function getShapes() {
     let orb2 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(-5, flooroffset, 0),
+        translation: translate(-6, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(0, 0, 0),
+    };
+    let orb3 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-7, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(0, 0, 0),
+    };
+    let orb4 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-8, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(0, 0, 0),
+    };
+    let orb5 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-9, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let orb6 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-10, flooroffset, 0),
+        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 400.0,
+        collisionDistance: vec3(0, 0, 0),
+    };
+    let orb7 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: translate(-11, flooroffset, 0),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -138,7 +258,7 @@ function getShapes() {
 
 
 
-    shapes = [sphere, cone, cube, cylinder, Ghost,arena,ceiling, Rock, orb1];
-    //shapes = [sphere,cone,cube,cylinder,Ghost,wall1,wall2,floor,ceiling,wall5,wall6,wallTest];
+
+    shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8];
     return shapes;
 }
