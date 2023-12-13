@@ -198,7 +198,7 @@ function getShapes() {
     let orb2 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(-7, flooroffset, 0),
+        translation: translate(16, flooroffset+5, -18.75),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -287,7 +287,6 @@ function getShapes() {
         materialShininess: 100.0,
         collisionDistance: vec3(1.3, 19.3, 1.3),
     };
-    //corner 2
     let Platform4 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -297,11 +296,12 @@ function getShapes() {
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
         collisionDistance: vec3(1.3, 19.3, 1.3),
-    };
+    }; 
+    //corner 2
     let Platform5 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, flooroffset-.5, -2), rotateX(90)),
+        translation: mult(translate(18.9, flooroffset-.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -311,18 +311,17 @@ function getShapes() {
     let Platform6 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, flooroffset-.5, -5), rotateX(90)),
+        translation: mult(translate(16, flooroffset+1, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
         collisionDistance: vec3(1.3, 19.3, 1.3),
     };
-    //corner 3
     let Platform7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, flooroffset-.5, -8), rotateX(90)),
+        translation: mult(translate(18.9, flooroffset+2.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -332,14 +331,35 @@ function getShapes() {
     let Platform8 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, flooroffset-.5, -11), rotateX(90)),
+        translation: mult(translate(16, flooroffset+4, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
         collisionDistance: vec3(1.3, 19.3, 1.3),
     };
+    //corner 3
     let Platform9 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(17, flooroffset-.5, -11), rotateX(90)),
+        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 100.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let Platform10 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(16, flooroffset+4, -18.75), rotateX(90)),
+        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 100.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let Platform11 = {
         shape: shape,
         vao: setUpVertexObject(shape),
         translation: mult(translate(0, flooroffset-.5, -11), rotateX(90)),
@@ -354,6 +374,7 @@ function getShapes() {
 
 
 
-    shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8,Platform1,Platform2,Platform3,Platform4];
+    shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8,
+              Platform1,Platform2,Platform3,Platform4,Platform5,Platform6,Platform7,Platform8];
     return shapes;
 }
