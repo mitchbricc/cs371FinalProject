@@ -212,6 +212,7 @@ function draw() {
 
         gl.uniformMatrix4fv(uniformModel, false, flatten(shapes[i].translation));
 
+        
         //shapes
         if(i < 3){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
