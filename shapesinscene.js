@@ -254,11 +254,22 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: vec3(0, 0, 0),
     };
+    shape = createPlatformVertices(2);
+    let Platform1 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(0, flooroffset, -2), rotateX(90)),
+        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 100.0,
+        collisionDistance: vec3(0, 0, 0),
+    };
 
 
 
 
 
-    shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8];
+    shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8,Platform1];
     return shapes;
 }

@@ -194,7 +194,7 @@ function init() {
 function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     let movements = collisionDetection(eye, shapes); //movements tracks the directions that the player can move
-    //document.getElementById("demo").innerHTML = movements;
+    document.getElementById("demo").innerHTML = movements;
 
     //moves ghost
     let ghostPosition = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
@@ -220,7 +220,6 @@ function draw() {
 
         gl.uniformMatrix4fv(uniformModel, false, flatten(shapes[i].translation));
 
-        
         //shapes
         if(i == 0){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
