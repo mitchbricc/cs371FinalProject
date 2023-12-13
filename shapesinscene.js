@@ -79,10 +79,11 @@ function getShapes() {
         texcoord: texcoords,
         indices: indices,
     };
+    let rockSize = .04
     let Rock1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(3, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(3, .4+flooroffset, 0), scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
@@ -92,7 +93,7 @@ function getShapes() {
     let Rock2 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(4, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(4, .4+flooroffset, 0),scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
@@ -102,7 +103,7 @@ function getShapes() {
     let Rock3 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(5, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(5, .4+flooroffset, 0),scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
@@ -112,7 +113,7 @@ function getShapes() {
     let Rock4 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(6, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(6, .4+flooroffset, 0), scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
@@ -122,7 +123,7 @@ function getShapes() {
     let Rock5 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(7, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(7, .4+flooroffset, 0), scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
@@ -132,7 +133,7 @@ function getShapes() {
     let Rock6 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(8, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(8, .4+flooroffset, 0), scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
@@ -142,7 +143,7 @@ function getShapes() {
     let Rock7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(9, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(9, .4+flooroffset, 0), scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
@@ -152,7 +153,7 @@ function getShapes() {
     let Rock8 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(10, .4+flooroffset, 0), scalem(.01, .01, .01)),
+        translation: mult(translate(10, flooroffset-.5, 0), scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
