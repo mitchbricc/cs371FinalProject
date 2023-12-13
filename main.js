@@ -13,7 +13,7 @@ let theta = -40 * Math.PI / 180.0;
 let phi = -35 * Math.PI / 180.0;
 let rotation_by_5_deg = 5.0 * Math.PI / 180.0;
 
-const T_STEP = 0.1;
+const T_STEP = 1.1;
 const R_STEP = 10.0;
 const S_STEP = 0.1;
 
