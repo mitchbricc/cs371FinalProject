@@ -334,12 +334,13 @@ function calculateAt(angleX, angleY) {
     let atx = lookDistance * Math.sin(radians(-eyeAngleX)) * Math.cos(radians(eyeAngleY));
     let aty = lookDistance * Math.sin(radians(-eyeAngleY));
     let atz = lookDistance * Math.cos(radians(eyeAngleX));
-    document.getElementById("demo2").innerHTML = eyeAngleY;
     at = vec3(atx + eye[0], aty + eye[1], atz + eye[2]);
 }
 function updatePosition(e) {
-    let angleX = e.movementX * APP;
-    let angleY = e.movementY * APP;
+    let xmovement = e.movementX;
+    let ymovement = e.movementY;
+    let angleX = xmovement * APP;
+    let angleY = ymovement * APP;
     calculateAt(angleX, angleY);
     modelViewMatrix = lookAt(eye, at, up);
 }
@@ -369,21 +370,27 @@ function keydown(event) {
 //Button handlers to be implemented
 function increaseZ() {
     eye[2] += T_STEP;
+    calculateAt(0,0);
 }
 function decreaseZ() {
     eye[2] += -T_STEP;
+    calculateAt(0,0);
 }
 function increaseX() {
     eye[0] += T_STEP;
+    calculateAt(0,0);
 }
 function decreaseX() {
     eye[0] += -T_STEP;
+    calculateAt(0,0);
 }
 function increaseY() {
     eye[1] += T_STEP;
+    calculateAt(0,0);
 }
 function decreaseY() {
     eye[0] += T_STEP;
+    calculateAt(0,0);
 }
 function ghostCollision(){
     let position = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
