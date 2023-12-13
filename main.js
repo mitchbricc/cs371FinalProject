@@ -193,9 +193,12 @@ function init() {
 
 function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gravity();
     let movements = collisionDetection(eye, shapes); //movements tracks the directions that the player can move
     document.getElementById("demo").innerHTML = movements;
 
+    
+    //document.getElementById("demo").innerHTML = movements;
     //moves ghost
     let ghostPosition = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
     ghostPosition = mult(shapes[4].translation, ghostPosition);
@@ -339,13 +342,11 @@ function updatePosition(e) {
     let angleX = e.movementX * APP;
     let angleY = e.movementY * APP;
     calculateAt(angleX, angleY);
-    document.getElementById("demo2").innerHTML = at;
     modelViewMatrix = lookAt(eye, at, up);
 }
 
 // Keystroke handler
 function keydown(event) {
-    document.getElementById("demo").innerHTML = event.code;
     switch (event.code) {
         case "KeyW":
             decreaseZ();
@@ -364,9 +365,6 @@ function keydown(event) {
             break;
         default: return; // Skip drawing if no effective action
     }
-}
-function jump() {
-
 }
 
 //Button handlers to be implemented
@@ -444,13 +442,14 @@ function ghostCollision(){
 
 function collisionDetection(eye, shapes) {
     let xneg = true, xpos = true, yneg = true, ypos = true, zneg = true, zpos = true;
-    if(ghostCollision()){
-        lives--;
-        showLives();
-    }
+    
     
     for (let i = 0; i < shapes.length; i++) {
         if(i==4){
+            if(ghostCollision()){
+                lives--;
+                showLives();
+            }
             i++;//skip ghost
         }
         let position = vec4(shapes[i].shape.positions[0][0], shapes[i].shape.positions[0][1], shapes[i].shape.positions[0][2], 1);
@@ -458,9 +457,6 @@ function collisionDetection(eye, shapes) {
         let xDistance = Math.abs(eye[0] - position[0]);
         let yDistance = Math.abs(eye[1] - position[1]);
         let zDistance = Math.abs(eye[2] - position[2]);
-        if(i == shapes.length-1){
-            //document.getElementById("demo2").innerHTML = xDistance;
-        }
         let xcollision = false;
         if (xDistance <= shapes[i].collisionDistance[0]) {
             xcollision = true;
@@ -486,11 +482,15 @@ function collisionDetection(eye, shapes) {
               }
         }
     }
+    arenaBorders()
     return [xneg, xpos, yneg, ypos, zneg, zpos];
 }
 let lives = 3;
 function showLives(){
     document.getElementById("demo").innerText = "lives: "+lives;
+    if(lives == 0){
+        alert("Game over! \n you died")
+    }
 }
 let score = 0;
 function showScore() {
@@ -499,4 +499,21 @@ function showScore() {
 function orbCollision() {
     score++;
     showScore();
+}
+function arenaBorders(){
+    if(Math.abs(eye[0])>= 19){
+        eye[0] = Math.sign(eye[0])*18.9;
+    }
+    if(Math.abs(eye[2])>= 19){
+        eye[2] = Math.sign(eye[2])*18.9;
+    }
+    if(eye[1] < -19){
+        eye[1] = -19;
+    }
+}
+function gravity(){
+    eye[1] -= T_STEP/4;
+}
+function jump() {
+    eye[1] += 20*T_STEP;
 }
