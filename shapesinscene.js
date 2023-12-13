@@ -258,7 +258,37 @@ function getShapes() {
     let Platform1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, flooroffset, -2), rotateX(90)),
+        translation: mult(translate(0, flooroffset-.5, -2), rotateX(90)),
+        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 100.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let Platform2 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(0, flooroffset-.5, -5), rotateX(90)),
+        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 100.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let Platform3 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(0, flooroffset-.5, -8), rotateX(90)),
+        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
+        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
+        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
+        materialShininess: 100.0,
+        collisionDistance: vec3(1.3, 19.3, 1.3),
+    };
+    let Platform4 = {
+        shape: shape,
+        vao: setUpVertexObject(shape),
+        translation: mult(translate(0, flooroffset-.5, -11), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -270,6 +300,6 @@ function getShapes() {
 
 
 
-    shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8,Platform1];
+    shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8,Platform1,Platform2,Platform3,Platform4];
     return shapes;
 }

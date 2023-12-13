@@ -59,22 +59,6 @@ let program;
 
 let textures = [];
 
-function playBackgroundMusic() {
-    // Initialize Web Audio API
-    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-    // Get the audio element
-    var audioElement = document.getElementById('backgroundMusic');
-
-    // Create an audio source from the audio element
-    var audioSource = audioContext.createMediaElementSource(audioElement);
-
-    // Connect the audio source to the audio context
-    audioSource.connect(audioContext.destination);
-
-    // Start playing the audio
-    audioElement.play();
-}
 
 function configureTexture( image, program, texture, index) {
     gl.activeTexture( gl.TEXTURE0 + index );  //0 active by default
@@ -172,6 +156,14 @@ function init() {
         textures[3] = gl.createTexture();
         configureTexture( image3, program,textures[3],3 );
     }
+    //platform
+    let image4 = new Image();
+    image4.crossOrigin = "anonymous";   // ask for CORS permission
+    image4.src = document.getElementById("texImage4").src; 
+    image4.onload = function() {
+        textures[4] = gl.createTexture();
+        configureTexture( image4, program,textures[4], 4);
+    }
  
     // Retrieve the nearFar element
     nf = document.getElementById('nearFar');
@@ -241,6 +233,9 @@ function draw() {
         }
         else if(i > 9){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
+        }
+        if(i > 17){
+            gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 4);
         }
         
 
@@ -502,9 +497,12 @@ function showLives(){
 let score = 0;
 function showScore() {
     document.getElementById("ScoreDisplay").innerHTML = score;
+    if(score==7){
+        document.getElementById("WIN").innerHTML = "YOU WIN!!";
+        stopBackgroundMusic();
+    }
 }
 function orbCollision(i) {
-    console.log("ORB COLLISION of orb index:"+i);
     let move = shapes[i].translation
     move = mult(translate(1000,1000,1000),move)
     shapes[i].translation = move;
