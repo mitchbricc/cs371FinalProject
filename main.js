@@ -485,11 +485,7 @@ function collisionDetection(eye, shapes) {
             
             //orb collecting
             if(((i > 1)&&(i < 4))||((i > 4)&&(i < 10))){
-                console.log("ORB COLLISION of orb index:"+i);
-                let move = shapes[i].translation
-                move = mult(translate(1000,1000,1000),move)
-                shapes[i].translation = move;
-                orbCollision();
+                orbCollision(i);
             }
         }
     }
@@ -507,7 +503,11 @@ let score = 0;
 function showScore() {
     document.getElementById("ScoreDisplay").innerHTML = score;
 }
-function orbCollision() {
+function orbCollision(i) {
+    console.log("ORB COLLISION of orb index:"+i);
+    let move = shapes[i].translation
+    move = mult(translate(1000,1000,1000),move)
+    shapes[i].translation = move;
     score++;
     showScore();
 }
