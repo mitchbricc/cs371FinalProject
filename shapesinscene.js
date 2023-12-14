@@ -142,6 +142,7 @@ function getShapes() {
         materialShininess: 10.0,
         collisionDistance: vec3(1.2, 1.2, 1.05),
     }
+    //MOVE THIS ROCK FOR TESTING
     let Rock7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -391,6 +392,7 @@ function getShapes() {
         materialShininess: 100.0,
         collisionDistance: vec3(1.3, 19.3, 1.3),
     };
+    //USE THIS PLATFORM FOR TESTING
     let Platform14 = {
         shape: shape,
         vao: setUpVertexObject(shape),
