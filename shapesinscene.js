@@ -82,6 +82,7 @@ function getShapes() {
         indices: indices,
     };
     let rockSize = .04
+    let rockCollisionDistance = vec3(2.9, 5, 2.25);
     let Rock1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -90,7 +91,7 @@ function getShapes() {
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     let Rock2 = {
         shape: shape,
@@ -100,7 +101,7 @@ function getShapes() {
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     let Rock3 = {
         shape: shape,
@@ -110,7 +111,7 @@ function getShapes() {
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     let Rock4 = {
         shape: shape,
@@ -120,7 +121,7 @@ function getShapes() {
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     let Rock5 = {
         shape: shape,
@@ -130,7 +131,7 @@ function getShapes() {
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     let Rock6 = {
         shape: shape,
@@ -140,18 +141,18 @@ function getShapes() {
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     //MOVE THIS ROCK FOR TESTING
     let Rock7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, .4+flooroffset, 15), scalem(rockSize, rockSize, rockSize)),
+        translation: mult(translate(10000, .4+flooroffset, 15), scalem(rockSize, rockSize, rockSize)),
         materialDiffuse: vec4(0.1, 0.1, 0.1),
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     let Rock8 = {
         shape: shape,
@@ -161,7 +162,7 @@ function getShapes() {
         materialAmbient: vec4(0.1, 0.1, 0.1),
         materialSpecular: vec4(0.1, 0.1, 0.1),
         materialShininess: 10.0,
-        collisionDistance: vec3(1.2, 1.2, 1.05),
+        collisionDistance: rockCollisionDistance,
     }
     
     shape = createCubeVertices(40);
@@ -188,6 +189,7 @@ function getShapes() {
         collisionDistance: vec3(0, 0, 0),
     };
     shape = createSphereVertices(.3, 50, 50);
+    let orbCollisionDistance = vec3(1.3, 19.3, 1.3);
     let orb1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -196,7 +198,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: orbCollisionDistance,
     };
     let orb2 = {
         shape: shape,
@@ -206,7 +208,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: orbCollisionDistance,
     };
     let orb3 = {
         shape: shape,
@@ -216,7 +218,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: orbCollisionDistance,
     };
     let orb4 = {
         shape: shape,
@@ -226,7 +228,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: orbCollisionDistance,
     };
     let orb5 = {
         shape: shape,
@@ -236,7 +238,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: orbCollisionDistance,
     };
     let orb6 = {
         shape: shape,
@@ -246,7 +248,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: orbCollisionDistance,
     };
     let orb7 = {
         shape: shape,
@@ -256,9 +258,10 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: orbCollisionDistance,
     };
     shape = createPlatformVertices(2);
+    let PlatformCollisionDistance = vec3(1.3, 1.3, 1.3);
     //corner 1
     let Platform1 = {
         shape: shape,
@@ -268,7 +271,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform2 = {
         shape: shape,
@@ -278,7 +281,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform3 = {
         shape: shape,
@@ -288,7 +291,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform4 = {
         shape: shape,
@@ -298,7 +301,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     }; 
     //corner 2
     let Platform5 = {
@@ -309,7 +312,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform6 = {
         shape: shape,
@@ -319,7 +322,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform7 = {
         shape: shape,
@@ -329,7 +332,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform8 = {
         shape: shape,
@@ -339,7 +342,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     //corner 3
     let Platform9 = {
@@ -350,7 +353,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform10 = {
         shape: shape,
@@ -360,7 +363,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform11 = {
         shape: shape,
@@ -370,7 +373,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform12 = {
         shape: shape,
@@ -380,7 +383,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     let Platform13 = {
         shape: shape,
@@ -390,7 +393,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
     //USE THIS PLATFORM FOR TESTING
     let Platform14 = {
@@ -401,7 +404,7 @@ function getShapes() {
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 100.0,
-        collisionDistance: vec3(1.3, 19.3, 1.3),
+        collisionDistance: PlatformCollisionDistance,
     };
 
 
