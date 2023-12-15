@@ -198,7 +198,7 @@ function draw() {
     let ghosty_move = eye[1] - ghostPosition[1];
     let ghostz_move = eye[2] - ghostPosition[2];
 
-    shapes[4].translation = mult(translate(Math.sign(ghostx_move) * T_STEP * .01, Math.sign(ghosty_move) * T_STEP * .01, Math.sign(ghostz_move) * T_STEP * .01), shapes[4].translation);
+    shapes[4].translation = mult(translate(Math.sign(ghostx_move) * T_STEP * .1, Math.sign(ghosty_move) * T_STEP * .1, Math.sign(ghostz_move) * T_STEP * .1), shapes[4].translation);
 
 
     // Display the current near and far values
@@ -231,9 +231,11 @@ function draw() {
         else if(i > 4 && i < 10){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 3);
         }
+        //rocks
         else if(i > 9){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 0);
         }
+        //platforms
         if(i > 17){
             gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), 4);
         }
@@ -393,6 +395,7 @@ function decreaseY() {
     eye[0] += T_STEP;
     calculateAt(0,0);
 }
+//handes the cases when the user collides with the ghost 
 function ghostCollision(){
     let position = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
         position = mult(shapes[4].translation, position);

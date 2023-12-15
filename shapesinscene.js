@@ -1,52 +1,10 @@
+//file that holds all the objects being created with parametric functions or mesh models
 function getShapes() {
     let shapes;
 
     let flooroffset = -19;
-    let shape = createSphereVertices(.25, 50, 50);
-    let sphere = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(-.6, .3+flooroffset, 0),
-        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 400.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    shape = createTruncatedConeVertices(.2, 0, 1, 50, 50);
-    let cone = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(.7, -.5+flooroffset, 0),
-        materialDiffuse: vec4(0.2, 0.2, 1.0, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 100.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    shape = createCubeVertices(.4);
-    let cube = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(-.6, -.5+flooroffset, 0),
-        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 100.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    shape = createTruncatedConeVertices(.125, .125, .75, 50, 50);
-    let cylinder = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(0, -.4+flooroffset, 0),
-        materialDiffuse: vec4(0.95, 0.2, 0.2, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(0.4, 0.4, 0.4, 1.0),
-        materialShininess: 400.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    //You will not use a mesh but parametric shapes                         for ghost
+    let shape; 
+    //You will not use a mesh but parametric shapes                         
     let coords = ghost.vertices[0].values;
     let indices = ghost.connectivity[0].indices;
     //Normals provided by Meshlab in json file
@@ -83,6 +41,7 @@ function getShapes() {
     };
     let rockSize = .04
     let rockCollisionDistance = vec3(2.9, 5, 2.25);
+    //all rocks 
     let Rock1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -143,7 +102,6 @@ function getShapes() {
         materialShininess: 10.0,
         collisionDistance: rockCollisionDistance,
     }
-    //MOVE THIS ROCK FOR TESTING
     let Rock7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -417,7 +375,7 @@ function getShapes() {
 
 
 
-
+    //list holds all shapes placed in the arena 
     shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8,
               Platform1,Platform2,Platform3,Platform4,Platform5,Platform6,Platform7,Platform8,Platform9,Platform10,Platform11,Platform12,Platform13,Platform14];
     
