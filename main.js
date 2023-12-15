@@ -199,7 +199,6 @@ function draw() {
     let ghosty_move = eye[1] - ghostPosition[1];
     let ghostz_move = eye[2] - ghostPosition[2];
 
-<<<<<<< HEAD
     //rotates and moves ghost
     var angleRad = Math.atan(ghostz_move/ghostx_move);
     var angleDeg = angleRad * 180 / Math.PI;
@@ -227,10 +226,6 @@ function draw() {
         shapes[4].translation = chase;
      }
      
-=======
-    shapes[4].translation = mult(translate(Math.sign(ghostx_move) * T_STEP * .1, Math.sign(ghosty_move) * T_STEP * .1, Math.sign(ghostz_move) * T_STEP * .1), shapes[4].translation);
-
->>>>>>> 38f455847bbff26e9137119f8b59f3fc5043a644
 
     // Display the current near and far values
     //nf.innerHTML = 'near: ' + Math.round(near * 100) / 100 + ', far: ' + Math.round(far * 100) / 100;
