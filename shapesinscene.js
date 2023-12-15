@@ -190,6 +190,7 @@ function getShapes() {
     };
     shape = createSphereVertices(.3, 50, 50);
     let orbCollisionDistance = vec3(1.3, 19.3, 1.3);
+    //left front corner
     let orb1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -200,16 +201,18 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //right front corner orb
     let orb2 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(16, flooroffset+5, -18.75),
+        translation: translate(10, flooroffset+3.5, -18.75),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //right back corner orb
     let orb3 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -220,26 +223,29 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //middle of arena orb
     let orb4 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(0, flooroffset, -6.5),
+        translation: translate(0, flooroffset, -7),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //left side orb
     let orb5 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(-18, flooroffset, -8),
+        translation: translate(-18, flooroffset, -9),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //left back corner orb
     let orb6 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -250,10 +256,11 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //left side orb
     let orb7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(18, flooroffset, -7.5),
+        translation: translate(18, flooroffset, -9),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -317,7 +324,7 @@ function getShapes() {
     let Platform6 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(16, flooroffset+1, -18.75), rotateX(90)),
+        translation: mult(translate(16, flooroffset+.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -327,7 +334,7 @@ function getShapes() {
     let Platform7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(18.9, flooroffset+2.5, -18.75), rotateX(90)),
+        translation: mult(translate(13, flooroffset+1.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -337,7 +344,7 @@ function getShapes() {
     let Platform8 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(16, flooroffset+4, -18.75), rotateX(90)),
+        translation: mult(translate(10, flooroffset+2.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -399,7 +406,7 @@ function getShapes() {
     let Platform14 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, flooroffset-.5, 0), rotateX(90)),
+        translation: mult(translate(10000, flooroffset-.5, 0), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
