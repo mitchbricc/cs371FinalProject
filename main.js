@@ -72,18 +72,9 @@ function configureTexture( image, program, texture, index) {
 
     //Set filters and parameters
     gl.generateMipmap(gl.TEXTURE_2D);
-    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-
-    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT );
-    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT );
 
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
-
-
-    //Link texture to a sampler in fragment shader
-    //gl.uniform1i(gl.getUniformLocation(program, "u_textureMap"), index);
 }
 
 function init() {
@@ -167,9 +158,6 @@ function init() {
  
     // Retrieve the nearFar element
     nf = document.getElementById('nearFar');
-    // buttons for moving viewer and changing size
-    // 
-
     //set up screen
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clearColor(0, 0, 0, 1);
@@ -188,10 +176,6 @@ function draw() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gravity();
     let movements = collisionDetection(shapes); //movements tracks the directions that the player can move
-    //document.getElementById("demo").innerHTML = movements;
-
-    
-    //document.getElementById("demo").innerHTML = movements;
     //moves ghost
     let ghostPosition = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
     ghostPosition = mult(shapes[4].translation, ghostPosition);
@@ -216,7 +200,22 @@ function draw() {
         angleDeg =360 + (-90 - angleDeg);
     }
     var aChange =  angleDeg - ghostAngle;
-     let chase = mult(translate(Math.sign(ghostx_move) * T_STEP * .01, Math.sign(ghosty_move) * T_STEP * .01, Math.sign(ghostz_move) * T_STEP * .01), shapes[4].translation);
+     
+     //fixes oscilation of ghost around player position
+     let tx = Math.sign(ghostx_move) * T_STEP * .1;
+     let ty = Math.sign(ghosty_move) * T_STEP * .1;
+     let tz = Math.sign(ghostz_move) * T_STEP * .1
+     if(Math.abs(ghostx_move) < T_STEP){
+        tx = 0;
+     }
+     if(Math.abs(ghosty_move) < T_STEP){
+        ty = 0;
+     }
+     if(Math.abs(ghostz_move) < T_STEP){
+        tz = 0;
+     }
+     let chase = mult(translate(tx, ty, tz), shapes[4].translation);
+     //fixes oscilation around player angle
      if(Math.abs(ghostAngle - angleDeg) > 1){
         shapes[4].translation = mult(chase, rotateY(aChange));
         ghostAngle += aChange;
@@ -225,12 +224,7 @@ function draw() {
      else{
         shapes[4].translation = chase;
      }
-     
 
-    // Display the current near and far values
-    //nf.innerHTML = 'near: ' + Math.round(near * 100) / 100 + ', far: ' + Math.round(far * 100) / 100;
-
-    //drawVertexObject(vao, shape.indices.length, materialAmbient, materialDiffuse, materialSpecular, materialShininess); 
     for (let i = 0; i < shapes.length; i++) {
         let modelViewMatrix = lookAt(eye, at, up);
         projectionMatrix = perspective(30, gl.canvas.width / gl.canvas.height, 1, 100);
@@ -371,9 +365,7 @@ function updatePosition(e) {
 
 // Keystroke handler
 function keydown(event) {
-    //document.getElementById("demo2").innerHTML = "f event";
     oldEye = vec3(eye[0],eye[1],eye[2]);
-    //document.getElementById("demo2").innerHTML = eye +"\n"+oldEye;
     switch (event.code) {
         case "KeyW":
             decreaseZ();
@@ -396,232 +388,3 @@ function keydown(event) {
     
 }
 
-//Button handlers to be implemented
-function increaseZ() {
-    eye[2] += T_STEP;
-    calculateAt(0,0);
-}
-function decreaseZ() {
-    eye[2] += -T_STEP;
-    calculateAt(0,0);
-}
-function increaseX() {
-    eye[0] += T_STEP;
-    calculateAt(0,0);
-}
-function decreaseX() {
-    eye[0] += -T_STEP;
-    calculateAt(0,0);
-}
-function increaseY() {
-    eye[1] += T_STEP;
-    calculateAt(0,0);
-}
-function decreaseY() {
-    eye[0] += T_STEP;
-    calculateAt(0,0);
-}
-//handes the cases when the user collides with the ghost 
-function ghostCollision(){
-    let position = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
-        position = mult(shapes[4].translation, position);
-        let xDistance = Math.abs(eye[0] - position[0]);
-        let yDistance = Math.abs(eye[1] - position[1]);
-        let zDistance = Math.abs(eye[2] - position[2]);
-
-        let xcollision = false;
-        if (xDistance <= shapes[4].collisionDistance[0]) {
-            xcollision = true;
-        }
-        let ycollision = false;
-        if (yDistance <= shapes[4].collisionDistance[1]) {
-            ycollision = true;
-        }
-        let zcollision = false;
-        if (zDistance <= shapes[4].collisionDistance[2]) {
-            zcollision = true;
-        }
-        let collision = xcollision && ycollision && zcollision;
-        if (collision) {
-                let ghostPosition = vec4(shapes[4].shape.positions[0], shapes[4].shape.positions[1], shapes[4].shape.positions[2], 1);
-                ghostPosition = mult(shapes[4].translation, ghostPosition);
-                let ghostx_move = eye[0] - ghostPosition[0];
-                let ghosty_move = eye[1] - ghostPosition[1];
-                let ghostz_move = eye[2] - ghostPosition[2];
-                if (Math.abs(ghostx_move) > 0.001) {
-                    if (Math.sign(eye[0] - position[0]) == -1) {
-                        eye[0] -= T_STEP * 5;
-                    }
-                    else {
-                        eye[0] += T_STEP * 5;
-                    }
-                }
-                if (Math.abs(ghosty_move) > 0.001) {
-                    if(Math.sign(eye[1] - position[1]) == -1){
-                        eye[1] -= T_STEP*5;
-                    }
-                    else{
-                        eye[1] += T_STEP*5;
-                    }
-                }
-                if (Math.abs(ghostz_move) > 0.001) {
-                    if(Math.sign(eye[2] - position[2]) == -1){
-                        eye[2] -= T_STEP*5;
-                    }
-                    else{
-                        eye[2] += T_STEP*5;
-                    }
-                }
-        }
-        return collision;
-    }
-
-function collisionDetection(shapes) {
-    let xneg = true, xpos = true, yneg = true, ypos = true, zneg = true, zpos = true;
-    
-    for (let i = 0; i < shapes.length; i++) {
-        if(i==4){
-            if(ghostCollision()){
-                lives--;
-                showLives();
-            }
-            i++;//skip ghost
-        }
-        //first vertex of the shape 
-        let position;
-        if(i > 9 && i < 18){
-            position = vec4(shapes[i].shape.positions[0], shapes[i].shape.positions[1], shapes[i].shape.positions[2], 1);
-            position = mult(shapes[i].translation, position);
-        }
-        // else if(i > 17 && i < 33) {
-        //     position = vec4(shapes[i].translation[0][3], shapes[i].translation[1][3], shapes[i].translation[2][3], 1);
-        //     position = mult(shapes[i].translation, position);
-        // }
-        else{
-            position = vec4(shapes[i].shape.positions[0][0], shapes[i].shape.positions[0][1], shapes[i].shape.positions[0][2], 1);
-            position = mult(shapes[i].translation, position);
-        }
-        let xDistance = Math.abs(eye[0] - position[0]);
-        let yDistance = Math.abs(eye[1] - position[1]);
-        let zDistance = Math.abs(eye[2] - position[2]);
-        let xcollision = false;
-        // if(i == shapes.length -1){
-        //     document.getElementById("demo2").innerHTML = isOnPlatform;
-        //     //document.getElementById("demo2").innerHTML = (shapes[i].collisionDistance[1]+position[1])+", "+ eye[1];
-        // }
-        if (xDistance <= shapes[i].collisionDistance[0]) {
-            xcollision = true;
-            
-        }
-        //for platforms only
-        else if((eye[0] - position[0] > -3.1 && eye[0] - position[0] < 0)&&(i > 17 && i < 33)){
-            xcollision = true;
-        }
-        let ycollision = false;
-        if (yDistance <= shapes[i].collisionDistance[1]) {
-            ycollision = true;
-            
-        }
-        let zcollision = false;
-        if (zDistance <= shapes[i].collisionDistance[2]) {
-            zcollision = true;
-        }
-        //for platforms only
-        else if((eye[2] - position[2] > -3.1 && eye[2] - position[2] < 0)&&(i > 17 && i < 33)){
-            zcollision = true;
-        }
-        let collision = xcollision && ycollision && zcollision;
-        if (collision) {
-            
-            
-            
-            //orb collecting
-            if(((i > 1)&&(i < 4))||((i > 4)&&(i < 10))){
-                orbCollision(i);
-            }
-            //rock collision
-            if(i > 9 && i < 18){
-                eye = vec3(oldEye[0],oldEye[1],oldEye[2]);
-                calculateAt(0,0);
-            }
-            //platform collision
-            if(i > 17 && i < 33){
-                isOnPlatform = false;
-                platformCollision(i,position);
-                
-                if(isOnPlatform){
-                    eye[1] = platformHeight;
-                }
-                else{
-                    eye = vec3(oldEye[0],oldEye[1],oldEye[2]);
-                    calculateAt(0,0);
-                }
-            }
-        }
-    }
-    islanded();
-    arenaBorders()
-    return [xneg, xpos, yneg, ypos, zneg, zpos];
-}
-let platformHeight = 19;
-let lives = 3;
-function showLives(){
-    document.getElementById("demo").innerText = "lives: "+lives;
-    if(lives == 0){
-        alert("Game over! \n you died")
-    }
-}
-let score = 0;
-function showScore() {
-    document.getElementById("ScoreDisplay").innerHTML = score;
-    if(score==7){
-        document.getElementById("WIN").innerHTML = "YOU WIN!!";
-        stopBackgroundMusic();
-    }
-}
-function orbCollision(i) {
-    let move = shapes[i].translation
-    move = mult(translate(1000,1000,1000),move)
-    shapes[i].translation = move;
-    score++;
-    showScore();
-}
-function platformCollision(i,position){
-    let PlatformCollisionDistance = shapes[i].collisionDistance;
-    if(PlatformCollisionDistance[1]+position[1]-.2 < eye[1]){
-        airborne = false;
-        isOnPlatform = true;
-        platformHeight = PlatformCollisionDistance[1]+position[1];
-    }
-        
-}
-function arenaBorders(){
-    if(Math.abs(eye[0])>= 19){
-        eye[0] = Math.sign(eye[0])*18.9;
-    }
-    if(Math.abs(eye[2])>= 19){
-        eye[2] = Math.sign(eye[2])*18.9;
-    }
-    if(eye[1] < -19){
-        eye[1] = -19;
-    }
-}
-function gravity(){
-    eye[1] -= T_STEP/4;
-    calculateAt(0,0);
-}
-let airborne = false;
-let isOnPlatform = false;
-function jump() {
-    if(!airborne){
-        airborne = true;
-        oldEye = vec3(eye[0],eye[1],eye[2]);
-        eye[1] += 40*T_STEP;
-        calculateAt(0,0);
-    }
-}
-function islanded(){
-    if(eye[1]==-19.025){
-        airborne = false;
-    }
-}
