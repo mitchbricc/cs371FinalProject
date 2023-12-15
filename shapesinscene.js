@@ -1,52 +1,10 @@
+//file that holds all the objects being created with parametric functions or mesh models
 function getShapes() {
     let shapes;
 
     let flooroffset = -19;
-    let shape = createSphereVertices(.25, 50, 50);
-    let sphere = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(-.6, .3+flooroffset, 0),
-        materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 400.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    shape = createTruncatedConeVertices(.2, 0, 1, 50, 50);
-    let cone = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(.7, -.5+flooroffset, 0),
-        materialDiffuse: vec4(0.2, 0.2, 1.0, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 100.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    shape = createCubeVertices(.4);
-    let cube = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(-.6, -.5+flooroffset, 0),
-        materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
-        materialShininess: 100.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    shape = createTruncatedConeVertices(.125, .125, .75, 50, 50);
-    let cylinder = {
-        shape: shape,
-        vao: setUpVertexObject(shape),
-        translation: translate(0, -.4+flooroffset, 0),
-        materialDiffuse: vec4(0.95, 0.2, 0.2, 1.0),
-        materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
-        materialSpecular: vec4(0.4, 0.4, 0.4, 1.0),
-        materialShininess: 400.0,
-        collisionDistance: vec3(.05, .05, .05),
-    };
-    //You will not use a mesh but parametric shapes                         for ghost
+    let shape; 
+    //You will not use a mesh but parametric shapes                         
     let coords = ghost.vertices[0].values;
     let indices = ghost.connectivity[0].indices;
     //Normals provided by Meshlab in json file
@@ -83,6 +41,7 @@ function getShapes() {
     };
     let rockSize = .04
     let rockCollisionDistance = vec3(2.9, 5, 2.25);
+    //all rocks 
     let Rock1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -143,7 +102,6 @@ function getShapes() {
         materialShininess: 10.0,
         collisionDistance: rockCollisionDistance,
     }
-    //MOVE THIS ROCK FOR TESTING
     let Rock7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -190,6 +148,7 @@ function getShapes() {
     };
     shape = createSphereVertices(.3, 50, 50);
     let orbCollisionDistance = vec3(1.3, 19.3, 1.3);
+    //left front corner
     let orb1 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -200,16 +159,18 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //right front corner orb
     let orb2 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(16, flooroffset+5, -18.75),
+        translation: translate(10, flooroffset+3.5, -18.75),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //right back corner orb
     let orb3 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -220,26 +181,29 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //middle of arena orb
     let orb4 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(0, flooroffset, -6.5),
+        translation: translate(0, flooroffset, -7),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //left side orb
     let orb5 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(-18, flooroffset, -8),
+        translation: translate(-18, flooroffset, -9),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //left back corner orb
     let orb6 = {
         shape: shape,
         vao: setUpVertexObject(shape),
@@ -250,10 +214,11 @@ function getShapes() {
         materialShininess: 400.0,
         collisionDistance: orbCollisionDistance,
     };
+    //left side orb
     let orb7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: translate(18, flooroffset, -7.5),
+        translation: translate(18, flooroffset, -9),
         materialDiffuse: vec4(0.15, 0.96, 0.17, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -317,7 +282,7 @@ function getShapes() {
     let Platform6 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(16, flooroffset+1, -18.75), rotateX(90)),
+        translation: mult(translate(16, flooroffset+.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -327,7 +292,7 @@ function getShapes() {
     let Platform7 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(18.9, flooroffset+2.5, -18.75), rotateX(90)),
+        translation: mult(translate(13, flooroffset+1.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -337,7 +302,7 @@ function getShapes() {
     let Platform8 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(16, flooroffset+4, -18.75), rotateX(90)),
+        translation: mult(translate(10, flooroffset+2.5, -18.75), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -399,7 +364,7 @@ function getShapes() {
     let Platform14 = {
         shape: shape,
         vao: setUpVertexObject(shape),
-        translation: mult(translate(0, flooroffset-.5, 0), rotateX(90)),
+        translation: mult(translate(10000, flooroffset-.5, 0), rotateX(90)),
         materialDiffuse: vec4(0.9, 0.9, 0.2, 1.0),
         materialAmbient: vec4(1.0, 1.0, 1.0, 1.0),
         materialSpecular: vec4(1.0, 1.0, 1.0, 1.0),
@@ -410,7 +375,7 @@ function getShapes() {
 
 
 
-
+    //list holds all shapes placed in the arena 
     shapes = [arena,ceiling,orb1, orb2,Ghost,orb3,orb4,orb5,orb6,orb7,Rock1,Rock2,Rock3,Rock4,Rock5,Rock6,Rock7,Rock8,
               Platform1,Platform2,Platform3,Platform4,Platform5,Platform6,Platform7,Platform8,Platform9,Platform10,Platform11,Platform12,Platform13,Platform14];
     
