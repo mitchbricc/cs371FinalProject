@@ -183,6 +183,7 @@ function init() {
     draw();
 }
 let oldEye = vec3(eye[0],eye[1],eye[2]);
+let ghostAngle = 0;
 function draw() {   
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gravity();
@@ -198,8 +199,33 @@ function draw() {
     let ghosty_move = eye[1] - ghostPosition[1];
     let ghostz_move = eye[2] - ghostPosition[2];
 
-    shapes[4].translation = mult(translate(Math.sign(ghostx_move) * T_STEP * .01, Math.sign(ghosty_move) * T_STEP * .01, Math.sign(ghostz_move) * T_STEP * .01), shapes[4].translation);
-
+    //rotates and moves ghost
+    var angleRad = Math.atan(ghostz_move/ghostx_move);
+    var angleDeg = angleRad * 180 / Math.PI;
+    if(Math.sign(ghostz_move)== 1, Math.sign(ghostx_move)== -1){
+        angleDeg =(90 + angleDeg) * 1;
+    }
+    else if(Math.sign(ghostz_move)== -1, Math.sign(ghostx_move)== -1){
+        angleDeg =(-90 - angleDeg)*-1;
+    }
+    else if(Math.sign(ghostz_move)== -1, Math.sign(ghostx_move)== 1){
+        angleDeg =360 + (90 - angleDeg)*-1;
+    }
+    else if(Math.sign(ghostz_move)== 1, Math.sign(ghostx_move)== 1){
+        
+        angleDeg =360 + (-90 - angleDeg);
+    }
+    var aChange =  angleDeg - ghostAngle;
+     let chase = mult(translate(Math.sign(ghostx_move) * T_STEP * .01, Math.sign(ghosty_move) * T_STEP * .01, Math.sign(ghostz_move) * T_STEP * .01), shapes[4].translation);
+     if(Math.abs(ghostAngle - angleDeg) > 1){
+        shapes[4].translation = mult(chase, rotateY(aChange));
+        ghostAngle += aChange;
+        ghostAngle %= 360
+     }
+     else{
+        shapes[4].translation = chase;
+     }
+     
 
     // Display the current near and far values
     //nf.innerHTML = 'near: ' + Math.round(near * 100) / 100 + ', far: ' + Math.round(far * 100) / 100;
